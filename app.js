@@ -7,48 +7,22 @@ function main(){
     let player2 = new Player("shinji")
     
 
-    for(let i = 0; i < deck.getLength(); i++){
-        console.log(i + 1 + " " + deck.cards[i].value + " " + deck.cards[i].suit)
-    }
+    deck.display()
     console.log("---------------------------")
     deal(deck, player1, player2)
     
-    console.log(player1.name + " faceDownFinal:")
-    for(let i = 0; i < 3; i++){
-        console.log(player1.faceDownFinal[i])
-    }
-
-    console.log(player2.name + " faceDownFinal:")
-    for(let i = 0; i < 3; i++){
-        console.log(player2.faceDownFinal[i])
-    }
-
-    console.log(player1.name + " faceUpFinal:")
-    for(let i = 0; i < 3; i++){
-        console.log(player1.faceUpFinal[i])
-    }
-    console.log(player2.name + " faceUpFinal:")
-    for(let i = 0; i < 3; i++){
-        console.log(player2.faceUpFinal[i])
-    }
-
-    console.log(player1.name + " hand:")
-    for(let i = 0; i < player1.hand.length; i++){
-        console.log(player1.hand[i])
-    }
-    console.log(player2.name + " hand:")
-    for(let i = 0; i < player2.hand.length; i++){
-        console.log(player2.hand[i])
-    }
-
-    console.log("---------------------------")
-    for(let i = 0; i < deck.getLength(); i++){
-        console.log(i + 1 + " " + deck.cards[i].value + " " + deck.cards[i].suit)
-    }
-
     
 
+    player1.display()
+    player2.display()
+
+    console.log("---------------------------")
+    deck.display()
+
+    
 }
+
+
 
 function deal(deck, player1, player2){
     let n = 0
@@ -82,6 +56,5 @@ function deal(deck, player1, player2){
         player2.faceDownFinal[i].flip()
     }
 }
-
 
 main()

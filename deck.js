@@ -9,6 +9,7 @@ class Deck{
         for(let i = 0; i < 4; i++){
             for(let j = 0; j < 13; j++){
                 let card = new Card(suits[i],values[j])
+                card.rank = j + 2
                 this.cards.push(card)
             }
         }
@@ -37,6 +38,13 @@ class Deck{
 
     draw(){
         return this.cards.shift()
+    }
+
+    display(){
+        for(let i = 0; i < this.getLength(); i++){
+            console.log(i + 1 + " " + this.cards[i].display())
+            
+        }
     }
 
 }
