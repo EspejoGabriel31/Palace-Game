@@ -8,14 +8,24 @@ class Deck{
         let values = ['2','3','4','5','6','7','8','9','10','jack','queen','king','ace']
         for(let i = 0; i < 4; i++){
             for(let j = 0; j < 13; j++){
-                let card = new Card(suits[0],values[j])
+                let card = new Card(suits[i],values[j])
                 this.cards.push(card)
             }
         }
     }
 
     shuffleDeck(){
+        let cur = this.cards.length
+        let temp
+        let i
 
+        while(cur > 0){
+            i = Math.floor(Math.random() * cur--)
+
+            temp = this.cards[cur]
+            this.cards[cur] = this.cards[i]
+            this.cards[i] = temp
+        }
     }
 
     deal(){
