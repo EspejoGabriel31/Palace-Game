@@ -2,8 +2,9 @@ class Card{
     constructor(suit, value){
         this.suit = suit;
         this.value = value;
-        this.rank = 0
+        this.rank = 0;
         this.faceUP = true;
+        this.hasEffect = false;
     }
 
     flip(){
@@ -21,6 +22,23 @@ class Card{
         }
         else{
             return this.rank + " " + this.value + " of " + this.suit;
+        }
+    }
+
+    activateEffect(){
+        if(this.hasEffect){
+            if(this.rank == 3){
+
+            }
+            if(this.rank == 7){ 
+
+            }
+            if(this.rank == 10){
+                
+            }
+        }
+        else{
+            console.log("this is a normal card")
         }
     }
 }

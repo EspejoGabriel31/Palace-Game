@@ -7,6 +7,9 @@ class Board{
         this.topCardRank = 0
     }
 
+    /**
+     * Main function for game
+     */
     play(){
         let turn = 0;
         let run = true
@@ -14,12 +17,12 @@ class Board{
             console.log("*****Turn: " + turn + "*****")
             this.displayPile()
             let tp = null
-            if(turn % 2 == 0){               
+            //if(turn % 2 == 0){               
                 tp = this.p1
-            }
-            else{
-                tp = this.p2
-            }
+            // }
+            // else{
+            //     tp = this.p2
+            // }
             this.menu(tp)
             const input = prompt("select an option")
             if(input == 1){
@@ -40,6 +43,10 @@ class Board{
         }
     }
 
+    /**
+     * 
+     * @param {*} player 
+     */
     menu(player){
         console.log(player.name + "'s turn!")
         player.displayHand()
@@ -50,18 +57,29 @@ class Board{
         console.log("0. Quit")
     }
 
+    /**
+     * 
+     * @param {*} p 
+     */
+    addToPile(p){
+        let l = p.loadingZone.length
+        for(let i = 0; i < l; i++){
+            this.pile.push(p.loadingZone.pop())
+        }
+        this.topCardRank = this.pile[0].rank
+    }
+
+    /**
+     * function for selecting cards stage
+     * @param {*} p 
+     */
     selectCards(p){
         let run = true
         let firstCardRank = 0
         let tempCardRank = 0
         let counter = 0
         while(run){
-            console.log("Select up to 4 cards to play, and then enter 'done' to push cards (or enter 'exit' to go back):")
-            p.displayHand()
-            p.displayLoad()
-            for(let i = 0; i < p.hand.length; i++){
-                console.log("[" + i + "]")
-            }
+            this.selectMenu(p)
             const choice = prompt()
             if(choice >= 0 && choice < p.hand.length){
                 tempCardRank = p.hand[choice].rank
@@ -78,17 +96,19 @@ class Board{
                         p.addToLoad(choice)
                     }
                 }
-                
             }
             else if (choice == "exit"){
+                if(p.loadingZone.length != 0){
+                    let l = p.loadingZone.length
+                    for(let i = 0; i < l; i++){
+                        p.hand.push(p.loadingZone.shift())
+                    }
+                }
                 run = false
                 break
             }
             else if (choice == "done"){
-                let l = p.loadingZone.length
-                for(let i = 0; i < l; i++){
-                    this.pile.push(p.loadingZone.pop())
-                }
+                
                 run = false
                 break
             }
@@ -96,14 +116,29 @@ class Board{
                 alert("invalid input")
             }
         }
-        
-
     }
 
+    /**
+     * selecting cards menu
+     * @param {player object} p 
+     */
+    selectMenu(p){
+        console.log("\nSelect up to 4 cards to play, and then enter 'done' to push cards (or enter 'exit' to go back):")
+        p.displayHand()
+        p.displayLoad()
+        for(let i = 0; i < p.hand.length; i++){
+            console.log("[" + i + "]")
+        }
+    }
+
+    /**
+     * 
+     */
     displayPile(){
         let counter = 0
-        console.log("Pile:")
+        console.log("\n*********Pile:*********")
         this.pile.forEach(c => console.log(++counter + ": " + c.display()))
+        console.log("***********************\n")
     }
 
     deal(){

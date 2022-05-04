@@ -15,6 +15,19 @@ class Deck{
         }
     }
 
+    addEffects(){
+        for(let i = 0; i < this.getLength(); i++){
+            if(this.cards[i].rank == 3){
+                this.cards[i].hasEffect = true
+            }
+            if(this.cards[i].rank == 7){
+                this.cards[i].hasEffect = true
+            }
+            if(this.cards[i].rank == 10){
+                this.cards[i].hasEffect = true
+            }
+        }
+    }
     //Shuffle function based on the Fisher-Yates Shuffle function by Mike Bostok
     //https://bost.ocks.org/mike/shuffle/
     shuffleDeck(){

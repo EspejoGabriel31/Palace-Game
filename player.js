@@ -36,7 +36,7 @@ class Player{
     displayHand(){
         let count = 0
         console.log(this.name + "'s hand:")
-        this.hand.forEach(c => console.log(++count + ": " + c.display()))
+        this.hand.forEach(c => console.log(count++ + ": " + c.display()))
     }
 
     displayLoad(){
