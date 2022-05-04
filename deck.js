@@ -18,7 +18,7 @@ class Deck{
     //Shuffle function based on the Fisher-Yates Shuffle function by Mike Bostok
     //https://bost.ocks.org/mike/shuffle/
     shuffleDeck(){
-        let cur = this.cards.length;
+        let cur = this.getLength();
         let temp;
         let i;
 
@@ -35,6 +35,9 @@ class Deck{
         return this.cards.length
     }
 
+    peek(){
+        return this.cards[0]
+    }
 
     draw(){
         return this.cards.shift()

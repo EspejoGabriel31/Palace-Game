@@ -17,12 +17,15 @@ function main(){
     player2.display()
 
     console.log("---------------------------")
-    deck.display()
+    player1.draw(player1.playerDeck.shift())
+    player1.display()
 
     
 }
 
-
+function play(card1, card2){
+    
+}
 
 function deal(deck, player1, player2){
     let n = 0
@@ -54,6 +57,27 @@ function deal(deck, player1, player2){
     for(let i = 0; i < player1.faceDownFinal.length; i++){
         player1.faceDownFinal[i].flip()
         player2.faceDownFinal[i].flip()
+    }
+
+    console.log("=========================")
+    deck.display()
+    console.log("=========================")
+
+    for(let i = 0; i < 34; i++){
+
+        console.log(i)
+        console.log(deck.peek())
+        if(i % 2 == 0){
+            player1.playerDeck.push(deck.draw())
+        }
+        else{
+            player2.playerDeck.push(deck.draw())
+        }
+    }
+
+    for(let i = 0; i < player1.playerDeck.length; i++){
+        player1.playerDeck[i].flip()
+        player2.playerDeck[i].flip()
     }
 }
 

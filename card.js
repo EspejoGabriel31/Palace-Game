@@ -3,7 +3,7 @@ class Card{
         this.suit = suit;
         this.value = value;
         this.rank = 0
-        this.faceUP = false;
+        this.faceUP = true;
     }
 
     flip(){
@@ -15,10 +15,8 @@ class Card{
         }
     }
 
-    
-
     display(){
-        if(this.faceUP == true){
+        if(!this.faceUP){
             return "hidden";
         }
         else{
