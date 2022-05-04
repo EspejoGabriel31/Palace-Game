@@ -9,14 +9,45 @@ class Player{
         this.score = 0;
     }
 
-    draw(card){
+    addToHand(card){
         if(!card.faceUP){
             card.flip();
         }
         this.hand.push(card)
     }
 
-    
+    addToLoad(index){
+        let temp = this.hand[index]
+        this.hand.splice(index, 1)
+        this.loadingZone.push(temp)
+    }
+
+    drawFromDeck(){
+        if(this.playerDeck.length != 0){
+            let temp = this.playerDeck.shift()
+            temp.flip()
+            this.hand.push(temp)
+        }
+        else{
+            alert("No more cards!")
+        }
+    }
+
+    displayHand(){
+        let count = 0
+        console.log(this.name + "'s hand:")
+        this.hand.forEach(c => console.log(++count + ": " + c.display()))
+    }
+
+    displayLoad(){
+        if(this.loadingZone == 0){
+            console.log("")
+        }
+        else{
+            console.log("\nCards to be played:")
+            this.loadingZone.forEach(c => console.log(">" + c.display()))
+        }
+    }
 
     display(){
         console.log(">>>"+ this.name + " faceDownFinal:")

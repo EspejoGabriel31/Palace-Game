@@ -44,9 +44,13 @@ class Deck{
     }
 
     display(){
-        for(let i = 0; i < this.getLength(); i++){
-            console.log(i + 1 + " " + this.cards[i].display())
-            
+        if(this.getLength() == 0){
+            console.log("all cards dealt!")
+        }
+        else{
+            for(let i = 0; i < this.getLength(); i++){
+                console.log(i + 1 + " " + this.cards[i].display())       
+            }
         }
     }
 
