@@ -15,7 +15,7 @@ class Board{
     play(){
         let run = true
         while(run){
-            console.log("*****Turn: " +this.turn + "*****")
+            console.log("*****Turn: " + this.turn + "*****")
             this.displayPile()
             let tp = null
             if(this.turn % 2 == 0){               
@@ -24,6 +24,9 @@ class Board{
             else{
                 tp = this.p2
             }
+
+            
+
             tp.drawTillThree()
             tp.displayRemainingCards()
             this.menu(tp)
@@ -46,18 +49,24 @@ class Board{
             else if(input == 0){
                 run = false
             }
-            else if(input == 3 && tp.isHandEmpty()){
+            else if(input == 3 && tp.isHandEmpty() && !tp.isFaceUpEmpty()){
                 this.faceUpLast(tp)
             }
             else if(input == 4 && tp.isFaceUpEmpty() && tp.isHandEmpty()){
-
+                this.faceDownLast(tp)
             }
             else{
                 console.log("\n============================\nCan't be used right now\n============================\n")
                 continue
             }
-        
-            
+
+            if(tp.isOutOfCards()){
+                console.log(tp.name + " wins!")
+                tp.win()
+                run = false
+                break
+            }
+
             console.log("\n")
             this.turn++
         }
@@ -76,7 +85,7 @@ class Board{
         }
         //console.log("2. Draw from deck")
         console.log("2. Pass")
-        if(player.isHandEmpty()){
+        if(player.isHandEmpty() && !player.isFaceUpEmpty()){
             console.log("3. Play face up final cards")
         }
         if(player.isHandEmpty() && player.isFaceUpEmpty()){
@@ -119,7 +128,7 @@ class Board{
             }
             else if(p.faceUpFinal[index].rank == 7){ //copy top card
                 console.log("\n============================\nCopied Top Card\n============================\n")
-                p.addToLoad(index) 
+                p.addFromFaceUp(index) 
                 this.addToPile(p) //ADD 7 CARD TO TO TOP OF PILE WITHOUT CHANGING THE TOPCARD RANK
             }
             else if(p.faceUpFinal[index].rank == 10){ //bomb
@@ -137,7 +146,7 @@ class Board{
             }
             else if(p.faceDownFinal[index].rank == 7){ //copy top card
                 console.log("\n============================\nCopied Top Card\n============================\n")
-                p.addToLoad(index) 
+                p.addFromFaceDown(index) 
                 this.addToPile(p) //ADD 7 CARD TO TO TOP OF PILE WITHOUT CHANGING THE TOPCARD RANK
             }
             else if(p.faceDownFinal[index].rank == 10){ //bomb
@@ -148,11 +157,13 @@ class Board{
         }
 
     }
+
     /**
      * function for adding cards from player's loading zone to pile
      * @param {*player instance being used} p 
      */
     addToPile(p){
+        console.log(p.loadingZone)
         if(p.loadingZone[0].rank == 7){
             this.pile.unshift(p.loadingZone.pop())
         }
@@ -174,6 +185,10 @@ class Board{
         this.topCardRank = 0
     }
 
+    /**
+     * Face Up phase of the game
+     * @param {*} p 
+     */
     faceUpLast(p){
         let run = true
         while(run){
@@ -202,6 +217,52 @@ class Board{
                     }
                     else{
                         p.addFromFaceUp(choice)
+                        this.addToPile(p)
+                        run = false
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    faceDownLast(p){
+        let run = true
+        let tempCard
+        while(run){
+            this.selectFaceDownMenu(p)
+            const choice = prompt()
+            if(isNaN(choice)){
+                if(choice == "-"){
+                    this.takePile(p)
+                    run = false
+                    break
+                }
+                else{
+                    alert("invalid input")
+                }
+            }
+            else{
+                if(choice >= 0 && choice < p.faceDownFinal.length){
+                    p.faceDownFinal[choice].flip()
+                    p.faceDownFinal[choice].display()
+                    if(p.faceDownFinal[choice].hasEffect)
+                    {
+                        this.activateEffect(choice, p, 3)
+                        run = false
+                        break
+                    }
+                    else if(p.faceDownFinal[choice].rank < this.topCardRank){
+                        console.log("\n============================\nCard was not higher than the top card!\n============================\n")
+                        tempCard = p.faceDownFinal[choice]
+                        p.faceDownFinal.splice(choice, 1)
+                        p.addToHand(tempCard)
+                        this.takePile(p)
+                        run = false
+                        break
+                    }
+                    else{
+                        p.addFromFaceDown(choice)
                         this.addToPile(p)
                         run = false
                         break
@@ -323,12 +384,19 @@ class Board{
     }
 
     selectFaceUpMenu(p){
-        console.log("\nSelect one of your Face Up cards to play, and then enter '+' to push cards:")
+        console.log("\nSelect one of your Face Up cards to play (or enter '-' to go back):")
         p.displayFaceUp()
         for(let i = 0; i < p.faceUpFinal.length; i++){
             console.log("[" + i + "]")
         }
-        
+    }
+
+    selectFaceDownMenu(p){
+        console.log("\nSelect one of your Face Down cards to play (or enter '-' to go back):")
+        p.displayFaceDown()
+        for(let i = 0; i < p.faceDownFinal.length; i++){
+            console.log("[" + i + "]")
+        }
     }
 
     /**
