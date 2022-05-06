@@ -22,6 +22,13 @@ class Player{
         this.loadingZone.unshift(temp)
     }
 
+    addFromFaceUp(index){
+        let temp = this.faceUpFinal[index]
+        this.faceUpFinal.splice(index, 1)
+        this.loadingZone.unshift(temp)
+
+    }
+
     drawTillThree(){
         while(this.hand.length < 3 && this.playerDeck.length != 0){
             this.drawFromDeck()
@@ -56,6 +63,12 @@ class Player{
         }
     }
 
+    displayFaceUp(){
+        let count = 0
+        console.log(this.name + "'s Face Up Cards:")
+        this.faceUpFinal.forEach(c => console.log(count++ + ": " + c.display()))
+    }
+
     display(){
         console.log(">>>"+ this.name + " faceDownFinal:")
         for(let i = 0; i < 3; i++){
@@ -69,6 +82,13 @@ class Player{
         for(let i = 0; i < this.hand.length; i++){
             console.log("    " + this.hand[i].display())
         }
+        console.log(">>>"+ this.name + " playerDeck:")
+        for(let i = 0; i < this.playerDeck.length; i++){
+            console.log("    " + this.playerDeck[i].display())
+        }
+    }
+
+    displayRemainingCards(){
         console.log(">>>"+ this.name + " playerDeck:")
         for(let i = 0; i < this.playerDeck.length; i++){
             console.log("    " + this.playerDeck[i].display())
