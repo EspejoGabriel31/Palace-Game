@@ -5,26 +5,31 @@ class Board{
         this.p1 = player1
         this.p2 = player2
         this.topCardRank = 0
+        this.turn = 0
     }
 
     /**
      * Main function for game
      */
     play(){
-        let turn = 0;
         let run = true
         while(run){
-            console.log("*****Turn: " + turn + "*****")
+            console.log("*****Turn: " +this.turn + "*****")
             this.displayPile()
             let tp = null
-            //if(turn % 2 == 0){               
+            if(this.turn % 2 == 0){               
                 tp = this.p1
-            // }
-            // else{
-            //     tp = this.p2
-            // }
+            }
+            else{
+                tp = this.p2
+            }
+            tp.drawTillThree()
             this.menu(tp)
             const input = prompt("select an option")
+            if(isNaN(input)){
+                console.log("\n============================\nInvalid. Enter a number\n============================\n")
+                continue
+            }
             if(input == 1){
                 this.selectCards(tp)
             }
@@ -33,13 +38,13 @@ class Board{
                 tp.displayHand()                    
             }
             else if(input == 3){
-                console.log("Turn passed")
+                console.log("\n============================\nTurn passed\n============================\n")
             }
             else if(input == 0){
                 run = false
             }
             console.log("\n")
-            turn++
+            this.turn++
         }
     }
 
@@ -58,15 +63,26 @@ class Board{
     }
 
     /**
-     * 
-     * @param {*} p 
+     * function for adding cards from player's loading zone to pile
+     * @param {*player instance being used} p 
      */
     addToPile(p){
-        let l = p.loadingZone.length
-        for(let i = 0; i < l; i++){
-            this.pile.push(p.loadingZone.pop())
+        if(p.loadingZone[0].rank == 7){
+            this.pile.unshift(p.loadingZone.pop())
         }
-        this.topCardRank = this.pile[0].rank
+        else{
+            let l = p.loadingZone.length
+            for(let i = 0; i < l; i++){
+                this.pile.unshift(p.loadingZone.pop())
+            }
+            this.topCardRank = this.pile[0].rank
+        }
+        
+    }
+
+    clearPile(){
+        this.pile = []
+        this.topCardRank = 0
     }
 
     /**
@@ -81,40 +97,102 @@ class Board{
         while(run){
             this.selectMenu(p)
             const choice = prompt()
-            if(choice >= 0 && choice < p.hand.length){
-                tempCardRank = p.hand[choice].rank
-                if(counter == 0){
-                    firstCardRank = tempCardRank
-                    p.addToLoad(choice)
-                    counter++
+            //check if input is a not a number
+            if(isNaN(choice)){
+                //exit condition 
+                if (choice == "exit"){
+                    if(p.loadingZone.length != 0){
+                        let l = p.loadingZone.length
+                        for(let i = 0; i < l; i++){
+                            p.hand.push(p.loadingZone.pop())
+                        }
+                    }
+                    run = false
+                    break
                 }
-                else{
-                    if(firstCardRank != tempCardRank){
-                        console.log("============================\nInvalid: multiple cards must be of the same value\n============================")
+                //continue condition
+                else if (choice == "done"){
+                    //if loading zone has all four of one card it becomes a bomb
+                    if(p.loadingZone.length == 4){ 
+                        this.clearPile()
+                        p.loadingZone = []
                     }
                     else{
-                        p.addToLoad(choice)
+                        this.addToPile(p)
                     }
+                    run = false
+                    break
+                }
+                //error handling
+                else{
+                    alert("invalid input")
                 }
             }
-            else if (choice == "exit"){
-                if(p.loadingZone.length != 0){
-                    let l = p.loadingZone.length
-                    for(let i = 0; i < l; i++){
-                        p.hand.push(p.loadingZone.shift())
+            else
+            {
+                //check if selected index is in the array
+                if(choice >= 0 && choice < p.hand.length){
+                    
+                    //check if selected card has an effect
+                    if(p.hand[choice].hasEffect)
+                    {
+                        console.log("\n============================\nThis Card has an effect\n============================\n")
+                        if(p.hand[choice].rank == 3){ //skip turn
+                            console.log("\n============================\nキング・クリムゾン\n============================\n")
+                            this.turn++ //SKIP OTHER PLAYER'S TURN
+                            p.hand.splice(choice,1) //REMOVE 3 CARD FROM PLAY
+                            run = false
+                            break
+                        }
+                        else if(p.hand[choice].rank == 7){ //copy top card
+                            console.log("\n============================\nCopied Top Card\n============================\n")
+                            p.addToLoad(choice) 
+                            this.addToPile(p) //ADD 7 CARD TO TO TOP OF PILE WITHOUT CHANGING THE TOPCARD RANK
+                            run = false
+                            break
+                        }
+                        else if(p.hand[choice].rank == 10){ //bomb
+                            console.log("\n============================\nキラークイーン\n============================\n")
+                            this.clearPile() //CLEAR PILE AND RESET TOPCARDRANK TO 0
+                            run = false
+                            break
+                        }
+                    }
+
+                    //check if selected card is higher value than the current top card
+                    else if(p.hand[choice].rank < this.topCardRank)
+                    {
+                        console.log("\n============================\nCard must be higher value than top of pile!\n============================\n")
+                    }
+                    else{
+                        //check if selected index is in the array
+                        tempCardRank = p.hand[choice].rank
+                        //check if this is the first card added to teh loading zone
+                        if(counter == 0)
+                        {
+                            firstCardRank = tempCardRank
+                            p.addToLoad(choice)
+                            counter++
+                        }
+                        else
+                        {
+                            //check if the cards added to the loading zone have the same value
+                            if(firstCardRank != tempCardRank)
+                            {
+                                console.log("\n============================\nInvalid: multiple cards must be of the same value\n============================\n")
+                            }
+                            else
+                            {
+                                p.addToLoad(choice)
+                            }
+                        }
                     }
                 }
-                run = false
-                break
+                else{
+                    console.log("\n============================\nInvalid: choice not within array\n============================\n")
+                }
             }
-            else if (choice == "done"){
-                
-                run = false
-                break
-            }
-            else{
-                alert("invalid input")
-            }
+            
         }
     }
 
@@ -132,7 +210,7 @@ class Board{
     }
 
     /**
-     * 
+     * Show the current pile
      */
     displayPile(){
         let counter = 0
@@ -141,6 +219,9 @@ class Board{
         console.log("***********************\n")
     }
 
+    /**
+     * Deal cards out to both players
+     */
     deal(){
         let n = 0
         while(n < 18){

@@ -19,7 +19,14 @@ class Player{
     addToLoad(index){
         let temp = this.hand[index]
         this.hand.splice(index, 1)
-        this.loadingZone.push(temp)
+        this.loadingZone.unshift(temp)
+    }
+
+    drawTillThree(){
+        while(this.hand.length < 3 && this.playerDeck.length != 0){
+            this.drawFromDeck()
+        }
+
     }
 
     drawFromDeck(){

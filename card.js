@@ -21,10 +21,11 @@ class Card{
             return "hidden";
         }
         else{
-            return this.rank + " " + this.value + " of " + this.suit;
+            return this.value + " of " + this.suit;
+            //this.rank + " " +  + " effect: " + this.hasEffect
         }
     }
-
+/*
     activateEffect(){
         if(this.hasEffect){
             if(this.rank == 3){
@@ -40,5 +41,5 @@ class Card{
         else{
             console.log("this is a normal card")
         }
-    }
+    }*/
 }

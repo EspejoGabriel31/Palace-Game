@@ -1,6 +1,8 @@
 function main(){
     let deck = new Deck();
     deck.buildDeck()
+    deck.addEffects()
+    //deck.display()
     deck.shuffleDeck()
 
     let player1 = new Player("p1")
