@@ -25,13 +25,14 @@ class Board{
                 tp = this.p2
             }
             tp.drawTillThree()
+            tp.display()
             this.menu(tp)
             const input = prompt("select an option")
             if(isNaN(input)){
                 console.log("\n============================\nInvalid. Enter a number\n============================\n")
                 continue
             }
-            if(input < 0 || input > 3){
+            if(input < 0 || input > 4){
                 console.log("\n============================\nInvalid. Enter a number displayed\n============================\n")
                 continue
             }
@@ -39,16 +40,24 @@ class Board{
                 this.selectCards(tp)
             }
             else if(input == 2){
-                tp.drawFromDeck()
-                tp.displayHand()                    
-            }
-            else if(input == 3){
                 console.log("\n============================\nTurn passed\n============================\n")
                 this.takePile(tp)
             }
             else if(input == 0){
                 run = false
             }
+            else if(input == 3 && tp.isHandEmpty()){
+
+            }
+            else if(input == 4 && tp.isFaceUpEmpty()){
+
+            }
+            else{
+                console.log("\n============================\nCan't be used yet\n============================\n")
+                continue
+            }
+        
+            
             console.log("\n")
             this.turn++
         }
@@ -63,13 +72,13 @@ class Board{
         player.displayHand()
         console.log("\nChoose an option")
         console.log("1. Play cards")
-        console.log("2. Draw from deck")
-        console.log("3. Pass")
+        //console.log("2. Draw from deck")
+        console.log("2. Pass")
         if(player.hand.length == 0){
-            console.log("4a. Play face up final cards")
+            console.log("3. Play face up final cards")
         }
         if(player.hand.length == 0 && player.faceUpFinal.length == 0){
-            console.log("4b. Play face down final cards")
+            console.log("4. Play face down final cards")
         }
         console.log("0. Quit")
     }
@@ -169,6 +178,7 @@ class Board{
                         else if(p.hand[choice].rank == 10){ //bomb
                             console.log("\n============================\nキラークイーン\n============================\n")
                             this.clearPile() //CLEAR PILE AND RESET TOPCARDRANK TO 0
+                            p.hand.splice(choice,1) //REMOVE 10 CARD FROM PLAY
                             run = false
                             break
                         }
