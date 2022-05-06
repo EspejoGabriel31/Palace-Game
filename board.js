@@ -7,6 +7,7 @@ class Board{
         this.topCardRank = 0
         this.turn = 0
     }
+    
 
     /**
      * Main function for game
@@ -30,6 +31,10 @@ class Board{
                 console.log("\n============================\nInvalid. Enter a number\n============================\n")
                 continue
             }
+            if(input < 0 || input > 3){
+                console.log("\n============================\nInvalid. Enter a number displayed\n============================\n")
+                continue
+            }
             if(input == 1){
                 this.selectCards(tp)
             }
@@ -39,6 +44,7 @@ class Board{
             }
             else if(input == 3){
                 console.log("\n============================\nTurn passed\n============================\n")
+                this.takePile(tp)
             }
             else if(input == 0){
                 run = false
@@ -49,7 +55,7 @@ class Board{
     }
 
     /**
-     * 
+     * Displays main menu based on which player is in control
      * @param {*} player 
      */
     menu(player){
@@ -59,6 +65,12 @@ class Board{
         console.log("1. Play cards")
         console.log("2. Draw from deck")
         console.log("3. Pass")
+        if(player.hand.length == 0){
+            console.log("4a. Play face up final cards")
+        }
+        if(player.hand.length == 0 && player.faceUpFinal.length == 0){
+            console.log("4b. Play face down final cards")
+        }
         console.log("0. Quit")
     }
 
@@ -80,6 +92,9 @@ class Board{
         
     }
 
+    /**
+     * Clear pile and start new one
+     */
     clearPile(){
         this.pile = []
         this.topCardRank = 0
@@ -134,7 +149,7 @@ class Board{
                 if(choice >= 0 && choice < p.hand.length){
                     
                     //check if selected card has an effect
-                    if(p.hand[choice].hasEffect)
+                    if(p.hand[choice].hasEffect && p.loadingZone.length == 0)
                     {
                         console.log("\n============================\nThis Card has an effect\n============================\n")
                         if(p.hand[choice].rank == 3){ //skip turn
@@ -157,6 +172,10 @@ class Board{
                             run = false
                             break
                         }
+                    }
+
+                    else if(p.hand[choice].hasEffect && p.loadingZone.length != 0){
+                        console.log("\n============================\nYou have already played normal cards\n============================\n")
                     }
 
                     //check if selected card is higher value than the current top card
@@ -207,6 +226,14 @@ class Board{
         for(let i = 0; i < p.hand.length; i++){
             console.log("[" + i + "]")
         }
+    }
+
+    takePile(p){
+        let len = this.pile.length
+        for(let i = 0; i < len; i++){
+            p.addToHand(this.pile.shift())
+        }
+        this.topCardRank = 0
     }
 
     /**
