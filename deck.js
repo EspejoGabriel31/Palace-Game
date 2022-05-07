@@ -32,6 +32,7 @@ class Deck{
     //https://bost.ocks.org/mike/shuffle/
     shuffleDeck(){
         let cur = this.getLength();
+        let count = 0
         let temp;
         let i;
 

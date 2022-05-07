@@ -24,9 +24,6 @@ class Board{
             else{
                 tp = this.p2
             }
-
-            
-
             tp.drawTillThree()
             tp.displayRemainingCards()
             this.menu(tp)
@@ -83,7 +80,6 @@ class Board{
         if(!player.isHandEmpty()){
             console.log("1. Play cards")
         }
-        //console.log("2. Draw from deck")
         console.log("2. Pass")
         if(player.isHandEmpty() && !player.isFaceUpEmpty()){
             console.log("3. Play face up final cards")
@@ -245,9 +241,8 @@ class Board{
             else{
                 if(choice >= 0 && choice < p.faceDownFinal.length){
                     p.faceDownFinal[choice].flip()
-                    p.faceDownFinal[choice].display()
-                    if(p.faceDownFinal[choice].hasEffect)
-                    {
+                    console.log("face down card: " + p.faceDownFinal[choice].display())
+                    if(p.faceDownFinal[choice].hasEffect){
                         this.activateEffect(choice, p, 3)
                         run = false
                         break
@@ -322,8 +317,7 @@ class Board{
                 if(choice >= 0 && choice < p.hand.length){
                     
                     //check if selected card has an effect
-                    if(p.hand[choice].hasEffect && p.loadingZone.length == 0)
-                    {
+                    if(p.hand[choice].hasEffect && p.loadingZone.length == 0){
                         this.activateEffect(choice, p, 1)
                         run = false
                         break
@@ -334,29 +328,24 @@ class Board{
                     }
 
                     //check if selected card is higher value than the current top card
-                    else if(p.hand[choice].rank < this.topCardRank)
-                    {
+                    else if(p.hand[choice].rank < this.topCardRank){
                         console.log("\n============================\nCard must be higher value than top of pile!\n============================\n")
                     }
                     else{
                         //check if selected index is in the array
                         tempCardRank = p.hand[choice].rank
                         //check if this is the first card added to teh loading zone
-                        if(counter == 0)
-                        {
+                        if(counter == 0){
                             firstCardRank = tempCardRank
                             p.addToLoad(choice)
                             counter++
                         }
-                        else
-                        {
+                        else{
                             //check if the cards added to the loading zone have the same value
-                            if(firstCardRank != tempCardRank)
-                            {
+                            if(firstCardRank != tempCardRank){
                                 console.log("\n============================\nInvalid: multiple cards must be of the same value\n============================\n")
                             }
-                            else
-                            {
+                            else{
                                 p.addToLoad(choice)
                             }
                         }
@@ -455,20 +444,20 @@ class Board{
             this.p1.faceDownFinal[i].flip()
             this.p2.faceDownFinal[i].flip()
         }
-    /*
-        for(let i = 0; i < 34; i++){
-            if(i % 2 == 0){
-                this.p1.playerDeck.push(this.deck.draw())
-            }
-            else{
-                this.p2.playerDeck.push(this.deck.draw())
-            }
-        }
     
-        for(let i = 0; i < this.p1.playerDeck.length; i++){
-            this.p1.playerDeck[i].flip()
-            this.p2.playerDeck[i].flip()
-        }*/
+        // for(let i = 0; i < 34; i++){
+        //     if(i % 2 == 0){
+        //         this.p1.playerDeck.push(this.deck.draw())
+        //     }
+        //     else{
+        //         this.p2.playerDeck.push(this.deck.draw())
+        //     }
+        // }
+    
+        // for(let i = 0; i < this.p1.playerDeck.length; i++){
+        //     this.p1.playerDeck[i].flip()
+        //     this.p2.playerDeck[i].flip()
+        // }
     }
     
 }
