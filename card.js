@@ -25,21 +25,45 @@ class Card{
             //this.rank + " " +  + " effect: " + this.hasEffect
         }
     }
-/*
-    activateEffect(){
-        if(this.hasEffect){
-            if(this.rank == 3){
 
-            }
-            if(this.rank == 7){ 
-
-            }
-            if(this.rank == 10){
-                
-            }
+    color(){
+        if(this.suit == 'spades' || this.suit == 'clubs'){
+            return 'black'
         }
         else{
-            console.log("this is a normal card")
+            return 'red'
         }
-    }*/
+    }
+
+    symbol(){
+        if(this.suit == 'spades'){
+            return '♠'
+        }
+        else if(this.suit == 'hearts'){
+            return '♥'
+        }
+        else if(this.suit == 'diamonds'){
+            return '♦'
+        }
+        else if(this.suit == 'clubs'){
+            return '♣'
+        }
+    }
+
+
+    render(){
+        const card = document.createElement('div');
+        if(this.faceUP){
+            card.innerText = this.symbol()
+            card.classList.add("card", this.color())
+            card.dataset.value = `${this.value} ${this.symbol()}`
+        }
+        else{
+            card.style.backgroundColor = "red";
+            card.classList.add("card")
+        }
+        
+            return card
+    }
+
 }

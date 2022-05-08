@@ -1,0 +1,188 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+     /* border:1px solid forestgreen;  */
+}
+
+body{
+    /* margin: auto; */
+    
+}
+
+.board{
+    display: inline-grid;
+    grid-template-columns: repeat(3, 4rem);
+    grid-template-rows: repeat(3, 7rem);
+    gap: 1rem;
+    justify-content: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    width: 100%;
+}
+
+.backline{
+    height:100%;
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: repeat(4, 4rem);
+    grid-column-start: 1;
+    grid-column-end: 3;
+    gap: 1rem;
+    
+}
+
+.backline-facedown{
+    height: 7rem;
+    width: 4rem;
+    
+    position:absolute;
+    z-index: -1; 
+    
+    display: inline-grid;
+    grid-template-columns: repeat(4, 4rem);
+    grid-column-start: 1;
+    grid-column-end: 3;
+    gap: 1rem;
+
+    transform: translate(5px, 5px);
+    
+    
+}
+
+.deck{
+    height: 7rem;
+    width: 4rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    border-radius: .5rem;
+    color: white;
+    user-select: none;
+}
+
+.text{
+    grid-column: span 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.turn-counter{
+    display: inline-grid;
+    grid-column-start: 1;
+    text-align: center;
+    height: 50%;
+    position: relative;
+    
+}
+
+.pile{
+    height:100%;
+    width: 100%;
+    display: inline-grid;
+    grid-column-start: 2;
+    border: 2px solid black;
+    border-radius: .5rem;
+}
+
+.opp-deck{
+    background-color: blue;
+}
+
+.play-deck{
+    background-color: green;  
+}
+
+.hand-row{
+    display: flex;
+    border: 2px solid black;
+}
+.play-hand{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    gap: 1rem;
+    
+}
+
+.opp-hand{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.card.red{
+    color: red;
+}
+
+.card.black{
+    color: black;
+}
+
+.card{
+    position: relative;
+    height: 100%;
+    width:100%;
+    border: 1px solid black;
+    border-radius: .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: white;
+}
+
+.play-hand-card-slot{
+    width: 4rem;
+}
+
+.player-name{
+    margin: auto;
+    text-align: center;
+    border: 2px solid black;
+}
+
+.last-row{
+    display: flex;
+    height: 7rem;
+    border: 2px solid black;
+}
+
+.loadingZone{
+   
+    height: 100%;
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    
+
+}
+
+.panel{
+    width: 20%;
+    /* border: 2px solid black; */
+}
+
+
+.card::before,
+.card::after{
+    position:absolute;
+    content: attr(data-value);
+    font-size: 1rem;
+}
+
+.card::before{
+    top: .5rem;
+    left: .5rem;
+}
+
+.card::after{
+    bottom: .5rem;
+    right: .5rem;
+    transform: rotate(180deg);
+}

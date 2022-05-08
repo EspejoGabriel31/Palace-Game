@@ -4,9 +4,14 @@ class Player{
         this.hand = [];
         this.faceDownFinal = [];
         this.faceUpFinal = [];
-        this.playerDeck = []
-        this.loadingZone = []
+        this.playerDeck = [];
+        this.loadingZone = [];
         this.wins = 0;
+        this.selectedCard = null;
+        this.selectedIndexHand = null;
+        this.selectedIndexFU = null;
+        this.selectedIndexFD = null;
+        
     }
 
     addToHand(card){
@@ -123,5 +128,95 @@ class Player{
 
     win(){
         this.wins++
+    }
+
+    renderLoadingZone(){
+        for(let i = 0; i < this.loadingZone.length; i++){
+            if(this.loadingZone[i] != null){
+                const lz = document.querySelector('.loading-card-slot-' + i + 1)
+                lz.appendChild(this.loadingZone[i].render())
+            }
+        }
+        
+    }
+
+    renderPlayer(){
+        //Player Side of Board
+        
+        for(let i = 0; i < 3; i++){
+            const cardSlotFU = document.querySelector(`.play-card-slot-FU` + i)
+            const cardSlotFD = document.querySelector(`.play-card-slot-FD` + i)
+            let tempCard = this.faceUpFinal[i].render()
+            let tempCard1 = this.faceDownFinal[i].render()
+
+            tempCard.addEventListener('click', () => {
+                this.selectedCard = this.faceUpFinal[i];
+                this.selectedIndexFU = i
+                console.log(this.selectedCard.display() + ' ' + this.selectedIndexFU)
+            })
+            tempCard1.addEventListener('click', () => {
+                this.selectedCard = this.faceDownFinal[i];
+                this.selectedIndexFD = i
+                console.log(this.selectedCard.display() + ' ' + this.selectedIndexFD)
+            }) 
+
+            cardSlotFU.appendChild(tempCard)
+            cardSlotFD.appendChild(tempCard1)
+            
+        }
+        //Player Hand
+        const playHandCardSlot = document.querySelector('.play-hand')
+        playHandCardSlot.innerHTML = ''
+        this.hand.forEach(c => {
+            const cardDiv = this.renderHandCard(c)
+            playHandCardSlot.append(cardDiv)
+        })
+        //Deck and Loading Zone
+        const playerDeck = document.querySelector('.play-deck')
+        console.log(this.playerDeck.length)
+        playerDeck.innerHTML = this.playerDeck.length;
+        this.renderLoadingZone()
+    }
+
+    renderHandCard(card){
+        const cardDiv = document.createElement('div')
+        cardDiv.className = 'play-hand-card-slot';
+        cardDiv.appendChild(card.render())
+
+        cardDiv.addEventListener('click', () => {
+            this.selectedCard = card;
+            this.selectedIndexHand = this.hand.indexOf(card)
+            console.log(this.selectedCard.display() + " " + this.selectedIndexHand)
+        })
+
+        return cardDiv
+        
+    }
+
+    renderOpponent(){
+        //Opponent side of Board
+        for(let i = 0; i < 3; i++){
+            const cardSlotFU = document.querySelector(`.opp-card-slot-FU` + i)
+            const cardSlotFD = document.querySelector(`.opp-card-slot-FD` + i)
+            let tempCard = this.faceUpFinal[i].render()
+            let tempCard1 = this.faceDownFinal[i].render()
+            cardSlotFU.appendChild(tempCard)
+            cardSlotFD.appendChild(tempCard1)
+        }
+        //Opponent Hand
+        const oppHand = document.querySelector('.opp-hand')
+        oppHand.innerHTML = ''
+        this.hand.forEach(c => {
+            c.flip()
+            const oppHandCardSlot = document.createElement('div')
+            oppHandCardSlot.className = 'play-hand-card-slot';
+            const cardDiv = c.render()
+            oppHandCardSlot.appendChild(cardDiv)
+            oppHand.append(oppHandCardSlot)
+        })
+        //Opponent deck
+        const opponentDeck = document.querySelector('.opp-deck')
+        console.log(this.playerDeck.length)
+        opponentDeck.innerHTML = this.playerDeck.length;
     }
 }

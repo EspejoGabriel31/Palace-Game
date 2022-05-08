@@ -6,15 +6,93 @@ class Board{
         this.p2 = player2
         this.topCardRank = 0
         this.turn = 0
+        this.selectPhase = false
+        this.mainPhase = true
     }
     
+    render(){
+        const turnCounter = document.querySelector('.turn-counter')
+        turnCounter.innerHTML = "Turn: " + this.turn;
+
+        const pileCard = document.querySelector(`.pile-card-slot`)
+        if(this.pile.length != 0){
+            pileCard.appendChild(this.pile[0].render())
+            pileCard.addEventListener('click', () => {
+                console.log(this.pile[0])
+            })
+        }
+        
+        const panelDiv = document.querySelector('.panel')
+        panelDiv.innerHTML = `
+            <h2 class="player-name">${this.p1.name}<h2>
+            <button class='switch-button'>${this.mainPhase ? `Play` : `Back`}</button>
+            <button class='pass-button'>Pass</button>
+            `
+        const switchButton = document.querySelector('.switch-button')
+        switchButton.addEventListener('click',() => {
+            if(this.mainPhase){
+                this.selectPhase = true
+                this.mainPhase = false
+                switchButton.innerHTML = `Back`
+            }
+            else{
+                this.selectPhase = false
+                this.mainPhase = true
+                switchButton.innerHTML = `Play`
+            }
+        })
+        
+    }   
+    
+
+
+
+
+    startGame(){
+        // const loadingZone1 = document.querySelector('.loading-card-slot-1')
+        // if(this.p1.selectedCard == null){
+        //     loadingZone1.addEventListener('click', () => {
+        //         console.log('loading-zone-1 selected')
+
+        //     })
+        // }
+        this.turn = 0
+        let pass = false
+        let tp = null
+        let op = null
+        if(this.turn % 2 == 0){               
+            tp = this.p1
+            op = this.p2
+        }
+        else{
+            tp = this.p2
+            op = this.p1
+        }
+        tp.drawTillThree()
+        tp.renderPlayer()
+        op.renderOpponent()
+
+
+        const passButton = document.querySelector('.pass-button')
+        passButton.addEventListener('click',() => {
+            console.log('turn passed')
+            pass = true
+        })
+        if(this.mainPhase &&  )
+        if(pass){
+            tp.takePile()
+        }
+
+        this.turn++
+    }
 
     /**
-     * Main function for game
+     * Main function for game console version
      */
     play(){
         let run = true
         while(run){
+            this.render()
             console.log("*****Turn: " + this.turn + "*****")
             this.displayPile()
             let tp = null
@@ -445,19 +523,19 @@ class Board{
             this.p2.faceDownFinal[i].flip()
         }
     
-        // for(let i = 0; i < 34; i++){
-        //     if(i % 2 == 0){
-        //         this.p1.playerDeck.push(this.deck.draw())
-        //     }
-        //     else{
-        //         this.p2.playerDeck.push(this.deck.draw())
-        //     }
-        // }
+        for(let i = 0; i < 34; i++){
+            if(i % 2 == 0){
+                this.p1.playerDeck.push(this.deck.draw())
+            }
+            else{
+                this.p2.playerDeck.push(this.deck.draw())
+            }
+        }
     
-        // for(let i = 0; i < this.p1.playerDeck.length; i++){
-        //     this.p1.playerDeck[i].flip()
-        //     this.p2.playerDeck[i].flip()
-        // }
+        for(let i = 0; i < this.p1.playerDeck.length; i++){
+            this.p1.playerDeck[i].flip()
+            this.p2.playerDeck[i].flip()
+        }
     }
     
 }

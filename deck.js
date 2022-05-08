@@ -5,7 +5,7 @@ class Deck{
 
     buildDeck(){
         let suits = ['clubs','hearts','diamonds','spades'];
-        let values = ['2','3','4','5','6','7','8','9','10','jack','queen','king','ace'];
+        let values = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
         for(let i = 0; i < 4; i++){
             for(let j = 0; j < 13; j++){
                 let card = new Card(suits[i],values[j])
@@ -66,6 +66,10 @@ class Deck{
                 console.log(i + 1 + " " + this.cards[i].display())       
             }
         }
+    }
+
+    render(){
+        
     }
 
 }

@@ -1,4 +1,7 @@
-function main(){
+
+
+
+async function main(){
     let deck = new Deck();
     deck.buildDeck()
     deck.addEffects()
@@ -9,13 +12,20 @@ function main(){
     let player2 = new Player("p2")
     
     let board = new Board(deck, player1, player2)
-
-    
-
     board.deal()
-    board.play()
+    board.render()
+    
+    player1.renderLoadingZone()
+    
+    
+    
+
 
     
+    
+
+    board.startGame()
+    //board.play()
 }
  
 main()
