@@ -21,10 +21,24 @@ class Player{
         this.hand.push(card)
     }
 
+    addToHandA(){
+        
+    }
+
     addToLoad(index){
         let temp = this.hand[index]
         this.hand.splice(index, 1)
         this.loadingZone.unshift(temp)
+        this.loadingZone.forEach(c => {
+            console.log(this.loadingZone.indexOf(c) + " " + c.display())
+        })
+    }
+
+    addToLoadA(){
+        let temp = this.selectedCard
+        this.hand.splice(this.selectedIndexHand, 1)
+        this.loadingZone.unshift(temp)
+        this.renderLoadingZone()
     }
 
     addFromFaceUp(index){
@@ -133,36 +147,37 @@ class Player{
     renderLoadingZone(){
         for(let i = 0; i < this.loadingZone.length; i++){
             if(this.loadingZone[i] != null){
-                const lz = document.querySelector('.loading-card-slot-' + i + 1)
+                const lz = document.querySelector(`.loading-card-slot-${i}`)
+                lz.innerHTML = ``
                 lz.appendChild(this.loadingZone[i].render())
             }
         }
         
     }
-
+/*
+    collect/save data for player
+    redraw player
+    function for defining actions for a turn
+*/
     renderPlayer(){
         //Player Side of Board
-        
         for(let i = 0; i < 3; i++){
             const cardSlotFU = document.querySelector(`.play-card-slot-FU` + i)
             const cardSlotFD = document.querySelector(`.play-card-slot-FD` + i)
             let tempCard = this.faceUpFinal[i].render()
             let tempCard1 = this.faceDownFinal[i].render()
-
-            tempCard.addEventListener('click', () => {
-                this.selectedCard = this.faceUpFinal[i];
-                this.selectedIndexFU = i
-                console.log(this.selectedCard.display() + ' ' + this.selectedIndexFU)
-            })
-            tempCard1.addEventListener('click', () => {
-                this.selectedCard = this.faceDownFinal[i];
-                this.selectedIndexFD = i
-                console.log(this.selectedCard.display() + ' ' + this.selectedIndexFD)
-            }) 
-
+            // tempCard.addEventListener('click', () => {
+            //     this.selectedCard = this.faceUpFinal[i];
+            //     this.selectedIndexFU = i
+            //     console.log(this.selectedCard.display() + ' ' + this.selectedIndexFU)
+            // })
+            // tempCard1.addEventListener('click', () => {
+            //     this.selectedCard = this.faceDownFinal[i];
+            //     this.selectedIndexFD = i
+            //     console.log(this.selectedCard.display() + ' ' + this.selectedIndexFD)
+            // }) 
             cardSlotFU.appendChild(tempCard)
             cardSlotFD.appendChild(tempCard1)
-            
         }
         //Player Hand
         const playHandCardSlot = document.querySelector('.play-hand')
@@ -178,16 +193,27 @@ class Player{
         this.renderLoadingZone()
     }
 
+    renderPlayerHand(){
+        const playHandCardSlot = document.querySelector('.play-hand')
+        playHandCardSlot.innerHTML = ''
+        this.hand.forEach(c => {
+            const cardDiv = this.renderHandCard(c)
+            playHandCardSlot.append(cardDiv)
+        })
+    }
+
     renderHandCard(card){
         const cardDiv = document.createElement('div')
-        cardDiv.className = 'play-hand-card-slot';
+        cardDiv.className = 'hand-card-slot-' + this.hand.indexOf(card);
+        cardDiv.style = "width: 4rem;"
         cardDiv.appendChild(card.render())
 
-        cardDiv.addEventListener('click', () => {
-            this.selectedCard = card;
-            this.selectedIndexHand = this.hand.indexOf(card)
-            console.log(this.selectedCard.display() + " " + this.selectedIndexHand)
-        })
+        // const cardDiv = document.querySelector('.hand-card-slot')
+        // cardDiv.addEventListener('click', () => {
+        //     this.selectedCard = card;
+        //     this.selectedIndexHand = this.hand.indexOf(card)
+        //     console.log(this.selectedCard.display() + " " + this.selectedIndexHand)
+        // })
 
         return cardDiv
         
@@ -209,7 +235,7 @@ class Player{
         this.hand.forEach(c => {
             c.flip()
             const oppHandCardSlot = document.createElement('div')
-            oppHandCardSlot.className = 'play-hand-card-slot';
+            oppHandCardSlot.className = 'hand-card-slot';
             const cardDiv = c.render()
             oppHandCardSlot.appendChild(cardDiv)
             oppHand.append(oppHandCardSlot)

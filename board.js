@@ -21,26 +21,13 @@ class Board{
                 console.log(this.pile[0])
             })
         }
+        else{
+            pileCard.innerHTML = ``
+        }
+        const playerName = document.querySelector('.player-name')
+        playerName.innerHTML = `${this.p1.name}`
         
-        const panelDiv = document.querySelector('.panel')
-        panelDiv.innerHTML = `
-            <h2 class="player-name">${this.p1.name}<h2>
-            <button class='switch-button'>${this.mainPhase ? `Play` : `Back`}</button>
-            <button class='pass-button'>Pass</button>
-            `
-        const switchButton = document.querySelector('.switch-button')
-        switchButton.addEventListener('click',() => {
-            if(this.mainPhase){
-                this.selectPhase = true
-                this.mainPhase = false
-                switchButton.innerHTML = `Back`
-            }
-            else{
-                this.selectPhase = false
-                this.mainPhase = true
-                switchButton.innerHTML = `Play`
-            }
-        })
+        
         
     }   
     
@@ -68,6 +55,7 @@ class Board{
             tp = this.p2
             op = this.p1
         }
+        this.render()
         tp.drawTillThree()
         tp.renderPlayer()
         op.renderOpponent()
@@ -75,15 +63,104 @@ class Board{
 
         const passButton = document.querySelector('.pass-button')
         passButton.addEventListener('click',() => {
-            console.log('turn passed')
             pass = true
+            console.log(pass)
+            this.takePile(tp)
+            console.log(tp.displayHand())
+            tp.renderPlayerHand()
+            this.render()
         })
-        if(this.mainPhase &&  )
-        if(pass){
-            tp.takePile()
+
+
+        const switchButton = document.querySelector('.switch-button')
+        const unshiftButton = document.querySelector('.unshift-button')
+        switchButton.addEventListener('click', () => {
+            if(this.mainPhase){
+                this.selectPhase = true
+                this.mainPhase = false
+                switchButton.innerHTML = `Back`
+
+                this.addHandCardEventListeners()
+                
+                if(this.p1.loadingZone.length != 0){
+                    unshiftButton.style = 'opacity: 1; cursor: allowed;'
+                    unshiftButton.disabled = false
+                    unshiftButton.addEventListener('click', () =>{
+                        this.addToPile(tp)
+                        this.render()
+                    })
+                }
+            }
+            else{
+                this.selectPhase = false
+                this.mainPhase = true
+                switchButton.innerHTML = `Play`
+                unshiftButton.style = 'opacity: 0.6; cursor: not-allowed;'
+                unshiftButton.disabled = true
+            }
+            console.log("mainPhase: "+ this.mainPhase)
+            console.log("select: "+ this.selectPhase)
+            
+        })
+        
+        if(!this.mainPhase && this.selectPhase && tp.selectedCard != null){
+            console.log('this worked')
+                this.cardSelect(tp)
+            
+        }
+        
+        
+        this.turn++
+    }
+
+
+    addHandCardEventListeners(){
+        let i = 0
+        this.p1.hand.forEach(c => {
+            const cardDiv = document.querySelector(`.hand-card-slot-${i++}`)           
+            cardDiv.addEventListener('click', () => {
+                this.p1.selectedCard = c;
+                this.p1.selectedIndexHand = this.p1.hand.indexOf(c)
+                console.log(this.p1.selectedCard.display() + " " + this.p1.selectedIndexHand)
+                if(this.selectPhase){
+                    this.p1.addToLoadA()
+                    cardDiv.innerHTML = ``
+                }
+            })
+        })
+    }
+
+    cardSelect(p){
+        let firstCardRank = 0
+        let tempCardRank = 0
+        if(p.selectedCard.hasEffect && p.loadingZone.length == 0){
+            this.activateEffect(p.selectedIndexHand, p, 1)
+            p.renderPlayer()
+        }
+        else if(p.selectedCard.hasEffect && p.loadingZone.length != 0){
+            alert('You have already played normal cards')
+        }
+        else if(p.selectedCard.rank < this.topCardRank){
+            alert('Card must be higher value than top of pile')
+        }
+        else{
+            tempCardRank = p.SelectedCard.rank
+            const lzEmpty = document.querySelector('.loading-card-slot-1')
+            if(!lzEmpty.hasChildNodes()){
+                firstCardRank = tempCardRank
+                p.addToLoad(p.selectedIndexHand)
+                p.renderPlayer()
+            }
+            elseP
+            if(firstCardRank != tempCardRank){
+                alert('Invalid: multiple cards must be of the same value')
+            }
+            else{
+                p.addToLoad(p.selectedIndexHand)
+                p.renderPlayer()
+            }
         }
 
-        this.turn++
     }
 
     /**
@@ -237,6 +314,7 @@ class Board{
      * @param {*player instance being used} p 
      */
     addToPile(p){
+
         console.log(p.loadingZone)
         if(p.loadingZone[0].rank == 7){
             this.pile.unshift(p.loadingZone.pop())
@@ -244,7 +322,9 @@ class Board{
         else{
             let l = p.loadingZone.length
             for(let i = 0; i < l; i++){
+                const loadingZoneCard = document.querySelector('.loading-card-slot-' + i)
                 this.pile.unshift(p.loadingZone.pop())
+                loadingZoneCard.innerHTML = ``
             }
             this.topCardRank = this.pile[0].rank
         }
@@ -537,5 +617,8 @@ class Board{
             this.p2.playerDeck[i].flip()
         }
     }
+
+
+    
     
 }

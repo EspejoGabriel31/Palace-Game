@@ -1,6 +1,6 @@
 *, *::after, *::before {
     box-sizing: border-box;
-     /* border:1px solid forestgreen;  */
+      border:1px solid forestgreen;  
 }
 
 body{
@@ -137,7 +137,7 @@ body{
     background-color: white;
 }
 
-.play-hand-card-slot{
+.hand-card-slot{
     width: 4rem;
 }
 
@@ -145,6 +145,7 @@ body{
     margin: auto;
     text-align: center;
     border: 2px solid black;
+    
 }
 
 .last-row{
@@ -165,7 +166,18 @@ body{
 
 .panel{
     width: 20%;
+    
     /* border: 2px solid black; */
+    
+}
+
+.buttons{
+    display: inline-grid;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    
 }
 
 
