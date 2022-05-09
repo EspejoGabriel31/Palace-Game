@@ -127,7 +127,11 @@ function addSelectCardEventListeners(){
             tempPlayer.selectedIndexHand = tempPlayer.hand.indexOf(c)
             console.log(tempPlayer.selectedCard.display() + " " + tempPlayer.selectedIndexHand)
             
-            if(board.selectPhase){
+            if(tempPlayer.selectedCard.hasEffect && tempPlayer.loadingZone.length == 0){
+                effectActivate(1)
+            }
+            else{
+                if(board.selectPhase){
                 tempPlayer.addToLoadA()
                 cardDiv.innerHTML = ``
                 
@@ -148,8 +152,49 @@ function addSelectCardEventListeners(){
                 //     turnButton.disabled = false
                 // })
             }
+            }
+            
         })
     })
+
+}
+
+function cardSelect(){
+    if(tempPlayer.selectedCard.hasEffect && tempPlayer.loadingZone.length == 0){
+        effectActivate(1)
+    }
+    else if(tempPlayer.selectedCard.hasEffect && tempPlayer.loadingZone.length != 0){
+        alert("You have already played normal cards")
+    }
+    else{
+
+    }
+}
+
+function effectActivate(selector){
+    if(selector == 1){
+        if(tempPlayer.selectedCard.rank == 3){
+            board.turn++
+            tempPlayer.hand.splice(tempPlayer.selectedIndexHand, 1)
+        }
+        else if(tempPlayer.selectedCard.rank == 7){
+            tempPlayer.addToLoadA()
+            board.addToPile(tempPlayer)
+        }
+        else if(tempPlayer.selectedCard.rank == 10){
+            board.clearPile()
+            tempPlayer.hand.splice(tempPlayer.selectedIndexHand, 1)
+            tempPlayer.renderPlayerHand()
+            //document.removeChild(document.querySelector(".hand-card-slot-" + tempPlayer.selectedIndexHand))
+        }
+    }
+    else if(selector == 2){
+
+    }
+    else if(selector == 3){
+
+    }
+    //tempPlayer.renderPlayerHand()
 }
 
 main()

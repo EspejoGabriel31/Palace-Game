@@ -332,6 +332,7 @@ class Board{
     clearPile(){
         this.pile = []
         this.topCardRank = 0
+        this.render()
     }
 
     /**
