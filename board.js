@@ -16,6 +16,7 @@ class Board{
 
         const pileCard = document.querySelector(`.pile-card-slot`)
         if(this.pile.length != 0){
+            pileCard.innerHTML = ``
             pileCard.appendChild(this.pile[0].render())
             pileCard.addEventListener('click', () => {
                 console.log(this.pile[0])
@@ -24,11 +25,7 @@ class Board{
         else{
             pileCard.innerHTML = ``
         }
-        const playerName = document.querySelector('.player-name')
-        playerName.innerHTML = `${this.p1.name}`
-        
-        
-        
+
     }   
     
 
@@ -36,14 +33,6 @@ class Board{
 
 
     startGame(){
-        // const loadingZone1 = document.querySelector('.loading-card-slot-1')
-        // if(this.p1.selectedCard == null){
-        //     loadingZone1.addEventListener('click', () => {
-        //         console.log('loading-zone-1 selected')
-
-        //     })
-        // }
-        this.turn = 0
         let pass = false
         let tp = null
         let op = null
@@ -55,78 +44,84 @@ class Board{
             tp = this.p2
             op = this.p1
         }
-        this.render()
+
         tp.drawTillThree()
-        tp.renderPlayer()
-        op.renderOpponent()
 
 
-        const passButton = document.querySelector('.pass-button')
-        passButton.addEventListener('click',() => {
-            pass = true
-            console.log(pass)
-            this.takePile(tp)
-            console.log(tp.displayHand())
-            tp.renderPlayerHand()
-            this.render()
-        })
+
+        // const passButton = document.querySelector('.pass-button')
+        // passButton.addEventListener('click',() => {
+        //     pass = true
+        //     console.log(pass)
+        //     this.takePile(tp)
+        //     console.log(tp.displayHand())
+        //     tp.renderPlayerHand()
+        //     this.render()
+        // })
 
 
         const switchButton = document.querySelector('.switch-button')
         const unshiftButton = document.querySelector('.unshift-button')
-        switchButton.addEventListener('click', () => {
-            if(this.mainPhase){
-                this.selectPhase = true
-                this.mainPhase = false
-                switchButton.innerHTML = `Back`
+    
+        // switchButton.addEventListener('click', () => {
+        //     if(this.mainPhase){
+        //         this.selectPhase = true
+        //         this.mainPhase = false
+        //         switchButton.innerHTML = `Back`
 
-                this.addHandCardEventListeners()
+                // this.addSelectCardEventListeners()
                 
-                if(this.p1.loadingZone.length != 0){
-                    unshiftButton.style = 'opacity: 1; cursor: allowed;'
-                    unshiftButton.disabled = false
-                    unshiftButton.addEventListener('click', () =>{
-                        this.addToPile(tp)
-                        this.render()
-                    })
-                }
+                // if(this.p1.loadingZone.length != 0){
+                //     unshiftButton.style = 'opacity: 1; cursor: allowed;'
+                //     unshiftButton.disabled = false
+                //     unshiftButton.addEventListener('click', () =>{
+                //         this.addToPile(tp)
+                //         this.render()
+                //         this.p1.renderPlayerHand()
+                //         this.selectPhase = false
+                //         this.mainPhase = true
+                //         switchButton.innerHTML = `Play`
+                //     })
+                // }
             }
-            else{
-                this.selectPhase = false
-                this.mainPhase = true
-                switchButton.innerHTML = `Play`
-                unshiftButton.style = 'opacity: 0.6; cursor: not-allowed;'
-                unshiftButton.disabled = true
-            }
-            console.log("mainPhase: "+ this.mainPhase)
-            console.log("select: "+ this.selectPhase)
-            
-        })
-        
-        if(!this.mainPhase && this.selectPhase && tp.selectedCard != null){
-            console.log('this worked')
-                this.cardSelect(tp)
-            
-        }
-        
-        
-        this.turn++
-    }
 
+    
 
-    addHandCardEventListeners(){
+    addSelectCardEventListeners(){
         let i = 0
         this.p1.hand.forEach(c => {
             const cardDiv = document.querySelector(`.hand-card-slot-${i++}`)           
-            cardDiv.addEventListener('click', () => {
+            
+            cardDiv.addEventListener('click', 
+            
+            () => { //when card has been clicked on
                 this.p1.selectedCard = c;
                 this.p1.selectedIndexHand = this.p1.hand.indexOf(c)
                 console.log(this.p1.selectedCard.display() + " " + this.p1.selectedIndexHand)
                 if(this.selectPhase){
                     this.p1.addToLoadA()
                     cardDiv.innerHTML = ``
+                    
+                    // const unshiftButton = document.querySelector('.unshift-button')
+                    // unshiftButton.style = 'opacity: 1; cursor: allowed;'
+                    // unshiftButton.disabled = false
+                    
+                    // unshiftButton.addEventListener('click', () =>{
+                    //     this.addToPile(this.p1)
+                    //     this.render()
+                    //     this.p1.renderPlayerHand()
+                    //     this.selectPhase = false
+                    //     this.mainPhase = true
+                    //     const switchButton = document.querySelector('.switch-button')
+                    //     const passButton = document.querySelector('.pass-button')
+                    //     switchButton.disabled = true
+                    //     passButton.disabled = true
+                    //     const turnButton = document.querySelector('.next-turn-button')
+                    //     turnButton.disabled = false
+                    // })
                 }
-            })
+            }
+            )
         })
     }
 
@@ -169,8 +164,8 @@ class Board{
     play(){
         let run = true
         while(run){
-            this.render()
-            console.log("*****Turn: " + this.turn + "*****")
+            
+            console.log("*****Turn: " + this.turn + "*****") //
             this.displayPile()
             let tp = null
             if(this.turn % 2 == 0){               
