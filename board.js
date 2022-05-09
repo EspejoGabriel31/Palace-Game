@@ -325,6 +325,7 @@ class Board{
         }
         
     }
+    
 
     /**
      * Clear pile and start new one

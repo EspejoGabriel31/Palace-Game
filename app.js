@@ -137,7 +137,7 @@ function addSelectCardEventListeners(){
                 
                 //const unshiftButton = document.querySelector('.unshift-button')
                 unshiftButton.disabled = false
-                
+                tempPlayer.renderPlayerHand()
                 // unshiftButton.addEventListener('click', () =>{
                 //     board.addToPile(tempPlayer)
                 //     board.render()
@@ -180,12 +180,12 @@ function effectActivate(selector){
         else if(tempPlayer.selectedCard.rank == 7){
             tempPlayer.addToLoadA()
             board.addToPile(tempPlayer)
+            tempPlayer.renderLoadingZone()
         }
         else if(tempPlayer.selectedCard.rank == 10){
             board.clearPile()
             tempPlayer.hand.splice(tempPlayer.selectedIndexHand, 1)
-            tempPlayer.renderPlayerHand()
-            //document.removeChild(document.querySelector(".hand-card-slot-" + tempPlayer.selectedIndexHand))
+            
         }
     }
     else if(selector == 2){
@@ -194,7 +194,7 @@ function effectActivate(selector){
     else if(selector == 3){
 
     }
-    //tempPlayer.renderPlayerHand()
+    tempPlayer.renderPlayerHand()
 }
 
 main()
