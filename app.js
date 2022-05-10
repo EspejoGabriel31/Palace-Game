@@ -3,8 +3,11 @@ let deck = new Deck();
 deck.buildDeck()
 deck.addEffects()
 deck.shuffleDeck()
-let player1 = new Player("kagami")
-let player2 = new Player("shinobu")
+
+let name1 = prompt('Enter Player 1\'s name')
+let name2 = prompt('Enter Player 2\'s name')
+let player1 = new Player(name1)
+let player2 = new Player(name2)
 player1.deckColor = "green"
 player2.deckColor = "blue"
 let board = new Board(deck, player1, player2)
