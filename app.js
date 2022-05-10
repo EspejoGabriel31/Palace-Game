@@ -8,8 +8,8 @@ let name1 = prompt('Enter Player 1\'s name')
 let name2 = prompt('Enter Player 2\'s name')
 let player1 = new Player(name1)
 let player2 = new Player(name2)
-player1.deckColor = "green"
-player2.deckColor = "blue"
+player1.deckColor = "crimson"
+player2.deckColor = "navy"
 let board = new Board(deck, player1, player2)
 board.deal()
 

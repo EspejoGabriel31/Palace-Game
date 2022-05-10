@@ -66,7 +66,7 @@ class Card{
             return card
         }
         else{
-            card.style.backgroundColor = "red";
+            card.style.backgroundColor = "grey";
             card.classList.add("card")
         }
         
