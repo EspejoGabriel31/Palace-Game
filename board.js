@@ -8,6 +8,7 @@ class Board{
         this.turn = 0
         this.selectPhase = false
         this.mainPhase = true
+        
     }
     
     topCardValue(){
@@ -35,7 +36,7 @@ class Board{
             pileCard.innerHTML = ``
             pileCard.appendChild(this.pile[0].render())
             pileCard.addEventListener('click', () => {
-                //console.log(this.pile[0])
+                console.log(this.pile[0])
             })
         }
         else{
@@ -44,113 +45,60 @@ class Board{
 
     }   
 
-    startGame(){
-        let pass = false
-        let tp = null
-        let op = null
-        if(this.turn % 2 == 0){               
-            tp = this.p1
-            op = this.p2
-        }
-        else{
-            tp = this.p2
-            op = this.p1
-        }
-
-        tp.drawTillThree()
-
-
-
-        // const passButton = document.querySelector('.pass-button')
-        // passButton.addEventListener('click',() => {
-        //     pass = true
-        //     //console.log(pass)
-        //     this.takePile(tp)
-        //     //console.log(tp.displayHand())
-        //     tp.renderPlayerHand()
-        //     this.render()
-        // })
-
-
-        const switchButton = document.querySelector('.start-button')
-        const unshiftButton = document.querySelector('.unshift-button')
-    
-        // switchButton.addEventListener('click', () => {
-        //     if(this.mainPhase){
-        //         this.selectPhase = true
-        //         this.mainPhase = false
-        //         switchButton.innerHTML = `Back`
-
-                // this.addSelectCardEventListeners()
-                
-                // if(this.p1.loadingZone.length != 0){
-                //     unshiftButton.style = 'opacity: 1; cursor: allowed;'
-                //     unshiftButton.disabled = false
-                //     unshiftButton.addEventListener('click', () =>{
-                //         this.addToPile(tp)
-                //         this.render()
-                //         this.p1.renderPlayerHand()
-                //         this.selectPhase = false
-                //         this.mainPhase = true
-                //         switchButton.innerHTML = `Play`
-                //     })
-                // }
-            }
-
     
 
-    addSelectCardEventListeners(){
-        let i = 0
-        this.p1.hand.forEach(c => {
-            const cardDiv = document.querySelector(`.hand-card-slot-${i++}`)           
+    // addSelectCardEventListeners(){
+    //     let i = 0
+    //     this.p1.hand.forEach(c => {
+    //         const cardDiv = document.querySelector(`.hand-card-slot-${i++}`)           
             
-            cardDiv.addEventListener('click', 
+    //         cardDiv.addEventListener('click', 
             
-            () => { //when card has been clicked on
-                this.p1.selectedCard = c;
-                this.p1.selectedIndexHand = this.p1.hand.indexOf(c)
-                ////console.log(this.p1.selectedCard.display() + " " + this.p1.selectedIndexHand)
-                if(this.selectPhase){
-                    this.p1.addToLoadA()
-                    cardDiv.innerHTML = ``
-                }
-            }
-            )
-        })
-    }
+    //         () => { //when card has been clicked on
+    //             this.p1.selectedCard = c;
+    //             this.p1.selectedIndexHand = this.p1.hand.indexOf(c)
+    //             ////console.log(this.p1.selectedCard.display() + " " + this.p1.selectedIndexHand)
+    //             if(this.selectPhase){
+    //                 this.p1.addToLoadA()
+    //                 cardDiv.innerHTML = ``
+    //             }
+    //         }
+    //         )
+    //     })
+    // }
 
-    cardSelect(p){
-        let firstCardRank = 0
-        let tempCardRank = 0
-        if(p.selectedCard.hasEffect && p.loadingZone.length == 0){
-            this.activateEffect(p.selectedIndexHand, p, 1)
-            p.renderPlayer()
-        }
-        else if(p.selectedCard.hasEffect && p.loadingZone.length != 0){
-            alert('You have already played normal cards')
-        }
-        else if(p.selectedCard.rank < this.topCardRank){
-            alert('Card must be higher value than top of pile')
-        }
-        else{
-            tempCardRank = p.SelectedCard.rank
-            const lzEmpty = document.querySelector('.loading-card-slot-1')
-            if(!lzEmpty.hasChildNodes()){
-                firstCardRank = tempCardRank
-                p.addToLoad(p.selectedIndexHand)
-                p.renderPlayer()
-            }
-            elseP
-            if(firstCardRank != tempCardRank){
-                alert('Invalid: multiple cards must be of the same value')
-            }
-            else{
-                p.addToLoad(p.selectedIndexHand)
-                p.renderPlayer()
-            }
-        }
+    // cardSelect(p){
+    //     let firstCardRank = 0
+    //     let tempCardRank = 0
+    //     if(p.selectedCard.hasEffect && p.loadingZone.length == 0){
+    //         this.activateEffect(p.selectedIndexHand, p, 1)
+    //         p.renderPlayer()
+    //     }
+    //     else if(p.selectedCard.hasEffect && p.loadingZone.length != 0){
+    //         alert('You have already played normal cards')
+    //     }
+    //     else if(p.selectedCard.rank < this.topCardRank){
+    //         alert('Card must be higher value than top of pile')
+    //     }
+    //     else{
+    //         tempCardRank = p.SelectedCard.rank
+    //         const lzEmpty = document.querySelector('.loading-card-slot-1')
+    //         if(!lzEmpty.hasChildNodes()){
+    //             firstCardRank = tempCardRank
+    //             p.addToLoad(p.selectedIndexHand)
+    //             p.renderPlayer()
+    //         }
+    //         elseP
+    //         if(firstCardRank != tempCardRank){
+    //             alert('Invalid: multiple cards must be of the same value')
+    //         }
+    //         else{
+    //             p.addToLoad(p.selectedIndexHand)
+    //             p.renderPlayer()
+    //         }
+    //     }
 
-    }
+    // }
 
     /**
      * Main function for game console version
@@ -303,8 +251,25 @@ class Board{
      * @param {*player instance being used} p 
      */
     addToPile(p){
-
-        ////console.log(p.loadingZone)
+        // if(p.selectedIndexFD != null){
+        //     console.log()
+        //     const faceDownZone = document.querySelector('.play-card-slot-FU' + p.selectedIndexFD)
+        //     this.pile.unshift(p.loadingZone.pop())
+        //     faceDownZone.innerHTML = ``
+        //     p.selectedIndexFD = null
+        //     p.rerenderFaceUp()
+        // }
+        // else if(p.selectedIndexFU != null){
+        //     const faceUpnZone = document.querySelector('.play-card-slot-FU' + p.selectedIndexFU)
+        //     this.pile.unshift(p.loadingZone.pop())
+        //     faceDownZone.innerHTML = ``
+        //     p.selectedIndexFU = null
+        //     p.rerenderFaceUp()
+        // }
+        // else 
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        console.log(p.selectedIndexFU + ' ' + p.selectedIndexFD)
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         if(p.loadingZone[0].rank == 7){
             const firstLoadingZoneCard = document.querySelector('.loading-card-slot-0')
             this.pile.unshift(p.loadingZone.pop())
@@ -319,6 +284,7 @@ class Board{
             }
             this.topCardRank = this.pile[0].rank
         }
+        p.rerenderFaceUp()
         p.renderLoadingZone()
     }
     
@@ -329,7 +295,6 @@ class Board{
     clearPile(){
         this.pile = []
         this.topCardRank = 0
-        //this.render()
     }
 
     /**
@@ -353,8 +318,7 @@ class Board{
             }
             else{
                 if(choice >= 0 && choice < p.faceUpFinal.length){
-                    if(p.faceUpFinal[choice].hasEffect)
-                    {
+                    if(p.faceUpFinal[choice].hasEffect){
                         this.activateEffect(choice, p, 2)
                         run = false
                         break
@@ -392,7 +356,6 @@ class Board{
             else{
                 if(choice >= 0 && choice < p.faceDownFinal.length){
                     p.faceDownFinal[choice].flip()
-                    ////console.log("face down card: " + p.faceDownFinal[choice].display())
                     if(p.faceDownFinal[choice].hasEffect){
                         this.activateEffect(choice, p, 3)
                         run = false

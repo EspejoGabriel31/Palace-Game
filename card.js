@@ -24,7 +24,7 @@ class Card{
             return "hidden";
         }
         else{
-            return this.value + " of " + this.suit + "FU Index: " + this.faceUpIndex + " FD Index: " + this.faceDownIndex; 
+            return this.value + " of " + this.suit + " FU Index: " + this.faceUpIndex + " FD Index: " + this.faceDownIndex; 
             //this.rank + " " +  + " effect: " + this.hasEffect
         }
     }

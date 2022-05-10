@@ -11,9 +11,10 @@ class Player{
         this.selectedIndexHand = null;
         this.selectedIndexFU = null;
         this.selectedIndexFD = null;
+        this.selectedBackrow = null
         this.deckColor = null
-        
-        
+        this.backRowSwitched = false
+        this.finalPhase = false
     }
 
     generateEmptyCard(){
@@ -61,25 +62,20 @@ class Player{
 
     addFromFaceUpA(){
         let temp = this.selectedCard
-        //console.log(this.selectedCard.display())
-        //console.log(this.selectedIndexFU)
-        this.faceUpFinal.splice(this.selectedIndexFU, 1, this.generateEmptyCard()) //replace FU card with empty card
+        let store = this.faceUpFinal.splice(this.selectedBackrow, 1, this.generateEmptyCard()) //replace FU card with empty card
+        console.log(store)
         this.loadingZone.unshift(temp) //
         this.selectedCard = null
         this.selectedIndexFU = null
-       // this.rerenderFaceUp()
-        this.renderLoadingZone()
     }
 
     addFromFaceDownA(){
         let temp = this.selectedCard
-
-        this.faceDownFinal.splice(this.selectedIndexFD, 1) //replace FD card with empty card
-        
+        this.faceDownFinal.splice(this.selectedIndexFD, 1, this.generateEmptyCard()) //replace FD card with empty card
         this.loadingZone.unshift(temp) //immediately sends card to pile
         this.selectedCard = null
         this.selectedIndexFD = null
-        this.renderPlayer()
+        //this.renderPlayer()
     }
 
 
@@ -118,7 +114,7 @@ class Player{
 
     displayFaceUp(){
         let count = 0
-        //console.log(this.name + "'s Face Up Cards:")
+        console.log(this.name + "'s Face Up Cards:")
         this.faceUpFinal.forEach(c => console.log(count++ + ": " + c.display()))
     }
 
@@ -234,9 +230,7 @@ class Player{
 
         // //Player Side of Board
 
-
         for(let i = 0; i < this.faceUpFinal.length; i++){
-            //console.log(i)
             const cardSlotFU = document.querySelector(`.play-card-slot-FU` + i)
             cardSlotFU.innerHTML = ``
             let tempCard = this.faceUpFinal[i].render()
@@ -286,51 +280,12 @@ class Player{
         return cardDiv     
     }
 
-    // renderPlayerBackrow(){
-    //     const backrowSlot = document.querySelector(`#player`)
-    //     backrowSlot.innerHTML = ``
-    //     this.faceUpFinal.forEach(c => {
-    //         const cardDiv = this.renderFUCard(c)
-    //         backrowSlot.append(cardDiv)
-    //     })
-    //     const FDdiv = document.createElement('div')
-    //     FDdiv.className='backline-facedown'
-    //     this.faceDownFinal.forEach(c => {
-    //         const bcardDiv = this.renderFDCard(c)
-    //         FDdiv.append(bcardDiv)
-    //     })
-    //     backrowSlot.appendChild(FDdiv)
-
-    // }
-
-
-
     flipHand(){
         this.hand.forEach(c => {
             c.flip()
         })
         this.renderPlayerHand()
-    }
-
-    
-
-    // renderFUCard(card){
-    //     const cardDiv = document.createElement('div')
-    //     cardDiv.className = `.play-card-slot-FU${this.faceUpFinal.indexOf(card)}`;
-    //     cardDiv.style = "width: 4rem;"
-    //     cardDiv.appendChild(card.render())
-    //     return cardDiv
-    // }
-
-    // renderFDCard(card){
-    //     const cardDiv = document.createElement('div')
-    //     cardDiv.className = '.play-card-slot-FD' + this.faceDownFinal.indexOf(card);
-    //     cardDiv.style = "width: 4rem;"
-    //     cardDiv.appendChild(card.render())
-    //     return cardDiv
-    // }
-
-    
+    }    
 
     renderOpponent(){
         //Opponent side of Board

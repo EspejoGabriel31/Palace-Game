@@ -4,7 +4,7 @@
 let deck = new Deck();
 deck.buildDeck()
 deck.addEffects()
-//deck.shuffleDeck()
+// deck.shuffleDeck()
 
 let player1 = new Player("kagami")
 let player2 = new Player("shinobu")
@@ -63,6 +63,7 @@ function resetPanel(){
 }
 
 function newTurn(){
+    switchBackandFront()
     tempPlayer.renderLoadingZone()
     tempPlayer.renderPlayerHand()
     board.render()
@@ -88,6 +89,10 @@ startButton.addEventListener('click', startEvent)
 function startEvent() {
     switchPhase()    
     addSelectCardEventListeners()
+    // console.log("isHandEmpty: " + tempPlayer.isHandEmpty() )
+    // console.log("isFUEmpty: " + tempPlayer.isFaceUpEmpty() )
+    // console.log("isFDEmpty: " + tempPlayer.isFaceDownEmpty() )
+    console.log("===============================================")
     if(tempPlayer.loadingZone.length != 0){
         unshiftButton.disabled = false
     }
@@ -97,9 +102,31 @@ function startEvent() {
         addFUCardEventListeners()
     }
     else if(tempPlayer.isHandEmpty() && tempPlayer.isFaceUpEmpty()){
-       // addFDCardEventListeners()
+        console.log('+++++++++++++++++++++++++++++++++++++++++')
+        //addFDCardEventListeners()
     }
 
+}
+
+function switchBackandFront(){
+    const fuNode0 = document.querySelector('.play-card-slot-FU0')
+    const fuNode1 = document.querySelector('.play-card-slot-FU1')
+    const fuNode2 = document.querySelector('.play-card-slot-FU2')
+    if(fuNode0.innerHTML == '<div></div>' && fuNode1.innerHTML == '<div></div>' && fuNode2.innerHTML == '<div></div>' && !tempPlayer.backRowSwitched){
+        let tempArray = tempPlayer.faceUpFinal
+        let tempArrayA = tempPlayer.faceDownFinal
+        tempPlayer.faceUpFinal = tempArrayA
+        tempPlayer.faceDownFinal = tempArray
+
+        tempPlayer.backRowSwitched = true
+    }
+    // else if((fuNode0.innerHTML != '<div></div>' || fuNode1.innerHTML != '<div></div>' || fuNode2.innerHTML != '<div></div>') && tempPlayer.backRowSwitched){
+    //     let tempArray = tempPlayer.faceUpFinal
+    //     let tempArrayA = tempPlayer.faceDownFinal
+    //     tempPlayer.faceUpFinal = tempArrayA
+    //     tempPlayer.faceDownFinal = tempArray
+    //     tempPlayer.backRowSwitched = false
+    // }
 }
 
 function switchPhase(){    
@@ -112,8 +139,11 @@ function switchPhase(){
         board.selectPhase = false
         board.mainPhase = true
         startButton.disabled = false
-
     }
+    if(!tempPlayer.finalPhase && tempPlayer.backRowSwitched){
+        tempPlayer.finalPhase = true
+    }
+    console.log('final phase?: ' + tempPlayer.finalPhase)
 }
 
 let cardDiv = null
@@ -175,60 +205,114 @@ function addFUCardEventListeners(){
 }
 
 function cardEventFU(c){
-    console.log("start of cardEventFU")
+    // console.log("start of cardEventFU")
+    
+    if(tempPlayer.finalPhase && !c.faceUP){
+        c.flip() 
+        console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[FINAL PHASE ACTIVE]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
+        tempPlayer.selectedBackrow = c.faceDownIndex
+        console.log('/////////////////////////////////////////////')
+        tempPlayer.displayFaceUp() 
+        console.log('/////////////////////////////////////////////')
+    }
+    else{
+        tempPlayer.selectedBackrow = c.faceUpIndex
+    }
+
+    console.log("BEFORE")
+    console.log('########################################')
+    tempPlayer.displayFaceUp()
+    console.log('########################################')
+    tempPlayer.displayFaceDown()
+    console.log('########################################')
 
     tempPlayer.selectedCard = c //select temp card
-    tempPlayer.selectedIndexFU = c.faceUpIndex
+    console.log('=======================================')
+    console.log(tempPlayer.selectedBackrow)
+    console.log('=======================================')
+    //tempPlayer.selectedIndexFU = c.faceUpIndex
 
-    console.log(tempPlayer.selectedCard.display())
-    console.log("selectedIndexFU: " + tempPlayer.selectedIndexFU)
 
     if(tempPlayer.selectedCard.hasEffect){
         effectActivate(2)
-        console.log("effect card activated successfully")
+        //console.log("effect card activated successfully")
     }
     else if(tempPlayer.selectedCard.rank < board.topCardRank){
         alert("Card must be higher value than top of pile!")
+        if(tempPlayer.finalPhase){
+            let FDtempCard = tempPlayer.selectedCard
+            tempPlayer.faceUpFinal.splice(tempPlayer.selectedBackrow, 1, tempPlayer.generateEmptyCard())
+            tempPlayer.addToHand(FDtempCard)
+            board.takePile(tempPlayer)
+            tempPlayer.rerenderFaceUp()
+            newTurn()
+        }
         return
     }
     else{
+        // if(tempPlayer.finalPhase){
+        //     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        //     console.log(tempPlayer.selectedIndexFU + ' ' + tempPlayer.selectedIndexFD)
+        //     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        // }
         tempPlayer.addFromFaceUpA()
         board.addToPile(tempPlayer)
-        console.log("normal card played successfully")
+        // console.log("normal card played successfully")
         tempPlayer.rerenderFaceUp()
-        newTurn()
-        console.log("new turn")
-    }
-    console.log("end of cardEventFU")
-    
 
+        console.log("AFTER")
+        console.log('########################################')
+        tempPlayer.displayFaceUp()
+        console.log('########################################')
+        tempPlayer.displayFaceDown()
+        console.log('########################################')
+
+        newTurn()
+        // console.log("new turn")
+    }
+    // console.log("end of cardEventFU")
 }
 
 function addFDCardEventListeners(){
     let i = 0
     tempPlayer.faceDownFinal.forEach(c => {
-        cardDiv = null
+        
         cardDiv = document.querySelector(`.play-card-slot-FD${i++}`)
         cardDiv.addEventListener('click', () => {
+            c.flip()
             cardEventFD(c)
         })
     })
 }
 
 function cardEventFD(c){
+
     tempPlayer.selectedCard = c
-    tempPlayer.selectedIndexFD = tempPlayer.faceDownFinal.indexOf(c)
-    if(tempPlayer.selectedCard.hasEffect && tempPlayer.loadingZone.length == 0){
+    tempPlayer.selectedIndexFD = c.faceDownIndex
+
+    if(tempPlayer.selectedCard.hasEffect){
         effectActivate(3)
+        console.log("effect card activated successfully")
     }
     else if(tempPlayer.selectedCard.rank < board.topCardRank){
         alert("Card must be higher value than top of pile!")
+
+        let FDtempCard = tempPlayer.selectedCard
+        tempPlayer.faceDownFinal.splice(tempPlayer.selectedIndexFD, 1, tempPlayer.generateEmptyCard())
+        tempPlayer.addToHand(FDtempCard)
+        board.takePile(tempPlayer)
+        newTurn()
         return
     }
     else {
         tempPlayer.addFromFaceDownA()
         board.addToPile(tempPlayer)
+        console.log("normal card played successfully")
+        tempPlayer.rerenderFaceDown()
+        newTurn()
+        console.log("new turn")
     }
+    console.log("end of cardEventFD")
 
 }
 
@@ -255,9 +339,10 @@ function effectActivate(selector){
         }
     }
     else if(selector == 2){
+        
         if(tempPlayer.selectedCard.rank == 3){
             board.turn++
-            tempPlayer.faceUpFinal.splice(tempPlayer.selectedIndexFU, 1, tempPlayer.generateEmptyCard())
+            tempPlayer.faceUpFinal.splice(tempPlayer.selectedBackrow, 1, tempPlayer.generateEmptyCard())
         }
         else if(tempPlayer.selectedCard.rank == 7){
             tempPlayer.addFromFaceUpA()
@@ -265,7 +350,7 @@ function effectActivate(selector){
         }
         else if(tempPlayer.selectedCard.rank == 10){
             board.clearPile()
-            tempPlayer.faceUpFinal.splice(tempPlayer.selectedIndexFU, 1, tempPlayer.generateEmptyCard())
+            tempPlayer.faceUpFinal.splice(tempPlayer.selectedBackrow, 1, tempPlayer.generateEmptyCard())
         }
         tempPlayer.rerenderFaceUp()
         
