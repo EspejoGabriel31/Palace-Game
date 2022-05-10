@@ -10,16 +10,32 @@ class Board{
         this.mainPhase = true
     }
     
+    topCardValue(){
+        if(this.pile[1] != null && this.pile[0].rank == 7 ){
+            return this.pile[1].value
+        }
+        else if(this.pile[0] == null){
+            return ''
+        }
+        else{
+            return this.pile[0].value
+        }
+
+    }
+
     render(){
         const turnCounter = document.querySelector('.turn-counter')
-        turnCounter.innerHTML = "Turn: " + this.turn;
+        turnCounter.innerHTML = "Turn:\n" + this.turn;
+
+        const topCard = document.querySelector('.top-card')
+        topCard.innerHTML = "Top Card:\n" + this.topCardValue()
 
         const pileCard = document.querySelector(`.pile-card-slot`)
         if(this.pile.length != 0){
             pileCard.innerHTML = ``
             pileCard.appendChild(this.pile[0].render())
             pileCard.addEventListener('click', () => {
-                console.log(this.pile[0])
+                //console.log(this.pile[0])
             })
         }
         else{
@@ -27,10 +43,6 @@ class Board{
         }
 
     }   
-    
-
-
-
 
     startGame(){
         let pass = false
@@ -52,15 +64,15 @@ class Board{
         // const passButton = document.querySelector('.pass-button')
         // passButton.addEventListener('click',() => {
         //     pass = true
-        //     console.log(pass)
+        //     //console.log(pass)
         //     this.takePile(tp)
-        //     console.log(tp.displayHand())
+        //     //console.log(tp.displayHand())
         //     tp.renderPlayerHand()
         //     this.render()
         // })
 
 
-        const switchButton = document.querySelector('.switch-button')
+        const switchButton = document.querySelector('.start-button')
         const unshiftButton = document.querySelector('.unshift-button')
     
         // switchButton.addEventListener('click', () => {
@@ -97,28 +109,10 @@ class Board{
             () => { //when card has been clicked on
                 this.p1.selectedCard = c;
                 this.p1.selectedIndexHand = this.p1.hand.indexOf(c)
-                console.log(this.p1.selectedCard.display() + " " + this.p1.selectedIndexHand)
+                ////console.log(this.p1.selectedCard.display() + " " + this.p1.selectedIndexHand)
                 if(this.selectPhase){
                     this.p1.addToLoadA()
                     cardDiv.innerHTML = ``
-                    
-                    // const unshiftButton = document.querySelector('.unshift-button')
-                    // unshiftButton.style = 'opacity: 1; cursor: allowed;'
-                    // unshiftButton.disabled = false
-                    
-                    // unshiftButton.addEventListener('click', () =>{
-                    //     this.addToPile(this.p1)
-                    //     this.render()
-                    //     this.p1.renderPlayerHand()
-                    //     this.selectPhase = false
-                    //     this.mainPhase = true
-                    //     const switchButton = document.querySelector('.switch-button')
-                    //     const passButton = document.querySelector('.pass-button')
-                    //     switchButton.disabled = true
-                    //     passButton.disabled = true
-                    //     const turnButton = document.querySelector('.next-turn-button')
-                    //     turnButton.disabled = false
-                    // })
                 }
             }
             )
@@ -165,7 +159,7 @@ class Board{
         let run = true
         while(run){
             
-            console.log("*****Turn: " + this.turn + "*****") //
+            //console.log("*****Turn: " + this.turn + "*****") //
             this.displayPile()
             let tp = null
             if(this.turn % 2 == 0){               
@@ -179,18 +173,18 @@ class Board{
             this.menu(tp)
             const input = prompt("select an option")
             if(isNaN(input)){
-                console.log("\n============================\nInvalid. Enter a number\n============================\n")
+                //console.log("\n============================\nInvalid. Enter a number\n============================\n")
                 continue
             }
             if(input < 0 || input > 4){
-                console.log("\n============================\nInvalid. Enter a number displayed\n============================\n")
+                //console.log("\n============================\nInvalid. Enter a number displayed\n============================\n")
                 continue
             }
             if(input == 1 && !tp.isHandEmpty()){
                 this.selectCards(tp)
             }
             else if(input == 2){
-                console.log("\n============================\nTurn passed\n============================\n")
+                //console.log("\n============================\nTurn passed\n============================\n")
                 this.takePile(tp)
             }
             else if(input == 0){
@@ -203,18 +197,18 @@ class Board{
                 this.faceDownLast(tp)
             }
             else{
-                console.log("\n============================\nCan't be used right now\n============================\n")
+                //console.log("\n============================\nCan't be used right now\n============================\n")
                 continue
             }
 
             if(tp.isOutOfCards()){
-                console.log(tp.name + " wins!")
+                //console.log(tp.name + " wins!")
                 tp.win()
                 run = false
                 break
             }
 
-            console.log("\n")
+            //console.log("\n")
             this.turn++
         }
     }
@@ -224,20 +218,20 @@ class Board{
      * @param {*} player 
      */
     menu(player){
-        console.log(player.name + "'s turn!")
+        //console.log(player.name + "'s turn!")
         player.displayHand()
-        console.log("\nChoose an option")
+        //console.log("\nChoose an option")
         if(!player.isHandEmpty()){
-            console.log("1. Play cards")
+            //console.log("1. Play cards")
         }
-        console.log("2. Pass")
+        //console.log("2. Pass")
         if(player.isHandEmpty() && !player.isFaceUpEmpty()){
-            console.log("3. Play face up final cards")
+            //console.log("3. Play face up final cards")
         }
         if(player.isHandEmpty() && player.isFaceUpEmpty()){
-            console.log("4. Play face down final cards")
+            //console.log("4. Play face down final cards")
         }
-        console.log("0. Quit")
+        //console.log("0. Quit")
     }
 
     /**
@@ -248,55 +242,55 @@ class Board{
      */
     activateEffect(index, p, selector){
         if(selector == 1){ //hand
-            console.log("\n============================\nThis Card has an effect\n============================\n")
+            //console.log("\n============================\nThis Card has an effect\n============================\n")
             if(p.hand[index].rank == 3){ //skip turn
-                console.log("\n============================\nキング・クリムゾン\n============================\n")
+                //console.log("\n============================\nキング・クリムゾン\n============================\n")
                 this.turn++ //SKIP OTHER PLAYER'S TURN
                 p.hand.splice(index,1) //REMOVE 3 CARD FROM PLAY
             }
             else if(p.hand[index].rank == 7){ //copy top card
-                console.log("\n============================\nCopied Top Card\n============================\n")
+                //console.log("\n============================\nCopied Top Card\n============================\n")
                 p.addToLoad(index) 
                 this.addToPile(p) //ADD 7 CARD TO TO TOP OF PILE WITHOUT CHANGING THE TOPCARD RANK
             }
             else if(p.hand[index].rank == 10){ //bomb
-                console.log("\n============================\nキラークイーン\n============================\n")
+                //console.log("\n============================\nキラークイーン\n============================\n")
                 this.clearPile() //CLEAR PILE AND RESET TOPCARDRANK TO 0
                 p.hand.splice(index,1) //REMOVE 10 CARD FROM PLAY
             }
         }
         else if(selector == 2){//faceUp
-            console.log("\n============================\nThis Card has an effect\n============================\n")
+            //console.log("\n============================\nThis Card has an effect\n============================\n")
             if(p.faceUpFinal[index].rank == 3){ //skip turn
-                console.log("\n============================\nキング・クリムゾン\n============================\n")
+                //console.log("\n============================\nキング・クリムゾン\n============================\n")
                 this.turn++ //SKIP OTHER PLAYER'S TURN
                 p.faceUpFinal.splice(index,1) //REMOVE 3 CARD FROM PLAY
             }
             else if(p.faceUpFinal[index].rank == 7){ //copy top card
-                console.log("\n============================\nCopied Top Card\n============================\n")
+                //console.log("\n============================\nCopied Top Card\n============================\n")
                 p.addFromFaceUp(index) 
                 this.addToPile(p) //ADD 7 CARD TO TO TOP OF PILE WITHOUT CHANGING THE TOPCARD RANK
             }
             else if(p.faceUpFinal[index].rank == 10){ //bomb
-                console.log("\n============================\nキラークイーン\n============================\n")
+                //console.log("\n============================\nキラークイーン\n============================\n")
                 this.clearPile() //CLEAR PILE AND RESET TOPCARDRANK TO 0
                 p.faceUpFinal.splice(index,1) //REMOVE 10 CARD FROM PLAY
             }
         }
         else if(selector == 3){//faceDown
-            console.log("\n============================\nThis Card has an effect\n============================\n")
+            //console.log("\n============================\nThis Card has an effect\n============================\n")
             if(p.faceDownFinal[index].rank == 3){ //skip turn
-                console.log("\n============================\nキング・クリムゾン\n============================\n")
+                //console.log("\n============================\nキング・クリムゾン\n============================\n")
                 this.turn++ //SKIP OTHER PLAYER'S TURN
                 p.faceDownFinal.splice(index,1) //REMOVE 3 CARD FROM PLAY
             }
             else if(p.faceDownFinal[index].rank == 7){ //copy top card
-                console.log("\n============================\nCopied Top Card\n============================\n")
+                //console.log("\n============================\nCopied Top Card\n============================\n")
                 p.addFromFaceDown(index) 
                 this.addToPile(p) //ADD 7 CARD TO TO TOP OF PILE WITHOUT CHANGING THE TOPCARD RANK
             }
             else if(p.faceDownFinal[index].rank == 10){ //bomb
-                console.log("\n============================\nキラークイーン\n============================\n")
+                //console.log("\n============================\nキラークイーン\n============================\n")
                 this.clearPile() //CLEAR PILE AND RESET TOPCARDRANK TO 0
                 p.faceDownFinal.splice(index,1) //REMOVE 10 CARD FROM PLAY
             }
@@ -310,9 +304,11 @@ class Board{
      */
     addToPile(p){
 
-        console.log(p.loadingZone)
+        ////console.log(p.loadingZone)
         if(p.loadingZone[0].rank == 7){
+            const firstLoadingZoneCard = document.querySelector('.loading-card-slot-0')
             this.pile.unshift(p.loadingZone.pop())
+            firstLoadingZoneCard.innerHTML = ``
         }
         else{
             let l = p.loadingZone.length
@@ -323,7 +319,7 @@ class Board{
             }
             this.topCardRank = this.pile[0].rank
         }
-        
+        p.renderLoadingZone()
     }
     
 
@@ -333,7 +329,7 @@ class Board{
     clearPile(){
         this.pile = []
         this.topCardRank = 0
-        this.render()
+        //this.render()
     }
 
     /**
@@ -364,7 +360,7 @@ class Board{
                         break
                     }
                     else if(p.faceUpFinal[choice].rank < this.topCardRank){
-                        console.log("\n============================\nCard must be higher value than top of pile!\n============================\n")
+                        //console.log("\n============================\nCard must be higher value than top of pile!\n============================\n")
                     }
                     else{
                         p.addFromFaceUp(choice)
@@ -396,14 +392,14 @@ class Board{
             else{
                 if(choice >= 0 && choice < p.faceDownFinal.length){
                     p.faceDownFinal[choice].flip()
-                    console.log("face down card: " + p.faceDownFinal[choice].display())
+                    ////console.log("face down card: " + p.faceDownFinal[choice].display())
                     if(p.faceDownFinal[choice].hasEffect){
                         this.activateEffect(choice, p, 3)
                         run = false
                         break
                     }
                     else if(p.faceDownFinal[choice].rank < this.topCardRank){
-                        console.log("\n============================\nCard was not higher than the top card!\n============================\n")
+                        //console.log("\n============================\nCard was not higher than the top card!\n============================\n")
                         tempCard = p.faceDownFinal[choice]
                         p.faceDownFinal.splice(choice, 1)
                         p.addToHand(tempCard)
@@ -479,12 +475,12 @@ class Board{
                     }
 
                     else if(p.hand[choice].hasEffect && p.loadingZone.length != 0){
-                        console.log("\n============================\nYou have already played normal cards\n============================\n")
+                        //console.log("\n============================\nYou have already played normal cards\n============================\n")
                     }
 
                     //check if selected card is higher value than the current top card
                     else if(p.hand[choice].rank < this.topCardRank){
-                        console.log("\n============================\nCard must be higher value than top of pile!\n============================\n")
+                        //console.log("\n============================\nCard must be higher value than top of pile!\n============================\n")
                     }
                     else{
                         //check if selected index is in the array
@@ -498,7 +494,7 @@ class Board{
                         else{
                             //check if the cards added to the loading zone have the same value
                             if(firstCardRank != tempCardRank){
-                                console.log("\n============================\nInvalid: multiple cards must be of the same value\n============================\n")
+                                //console.log("\n============================\nInvalid: multiple cards must be of the same value\n============================\n")
                             }
                             else{
                                 p.addToLoad(choice)
@@ -507,7 +503,7 @@ class Board{
                     }
                 }
                 else{
-                    console.log("\n============================\nInvalid: choice not within array\n============================\n")
+                    //console.log("\n============================\nInvalid: choice not within array\n============================\n")
                 }
             }
             
@@ -519,27 +515,27 @@ class Board{
      * @param {player object} p 
      */
     selectMenu(p){
-        console.log("\nSelect up to 4 cards to play, and then enter '+' to push cards (or enter '-' to go back):")
+        //console.log("\nSelect up to 4 cards to play, and then enter '+' to push cards (or enter '-' to go back):")
         p.displayHand()
         p.displayLoad()
         for(let i = 0; i < p.hand.length; i++){
-            console.log("[" + i + "]")
+            //console.log("[" + i + "]")
         }
     }
 
     selectFaceUpMenu(p){
-        console.log("\nSelect one of your Face Up cards to play (or enter '-' to go back):")
+        //console.log("\nSelect one of your Face Up cards to play (or enter '-' to go back):")
         p.displayFaceUp()
         for(let i = 0; i < p.faceUpFinal.length; i++){
-            console.log("[" + i + "]")
+            //console.log("[" + i + "]")
         }
     }
 
     selectFaceDownMenu(p){
-        console.log("\nSelect one of your Face Down cards to play (or enter '-' to go back):")
+        //console.log("\nSelect one of your Face Down cards to play (or enter '-' to go back):")
         p.displayFaceDown()
         for(let i = 0; i < p.faceDownFinal.length; i++){
-            console.log("[" + i + "]")
+            //console.log("[" + i + "]")
         }
     }
 
@@ -560,9 +556,9 @@ class Board{
      */
     displayPile(){
         let counter = 0
-        console.log("\n*********Pile:*********")
+        //console.log("\n*********Pile:*********")
         this.pile.forEach(c => console.log(++counter + ": " + c.display()))
-        console.log("***********************\n")
+        //console.log("***********************\n")
     }
 
     /**
@@ -578,9 +574,9 @@ class Board{
                 else if(n >= 6 && n < 12){
                     this.p1.faceUpFinal.push(this.deck.draw())
                 }
-                else{
-                    this.p1.addToHand(this.deck.draw())
-                }
+                // else{
+                //     this.p1.addToHand(this.deck.draw())
+                // }
             }
             else{
                 if(n < 6){
@@ -589,25 +585,31 @@ class Board{
                 else if(n >= 6 && n < 12){
                     this.p2.faceUpFinal.push(this.deck.draw())
                 }
-                else{
-                    this.p2.addToHand(this.deck.draw())
-                }
+                // else{
+                //     this.p2.addToHand(this.deck.draw())
+                // }
             }
             n++
         }
         for(let i = 0; i < this.p1.faceDownFinal.length; i++){
             this.p1.faceDownFinal[i].flip()
+            this.p1.faceDownFinal[i].faceDownIndex = i
             this.p2.faceDownFinal[i].flip()
+            this.p2.faceDownFinal[i].faceDownIndex = i
+        }
+        for(let i = 0; i < this.p1.faceUpFinal.length; i++){
+            this.p1.faceUpFinal[i].faceUpIndex = i
+            this.p2.faceUpFinal[i].faceUpIndex = i
         }
     
-        for(let i = 0; i < 34; i++){
-            if(i % 2 == 0){
-                this.p1.playerDeck.push(this.deck.draw())
-            }
-            else{
-                this.p2.playerDeck.push(this.deck.draw())
-            }
-        }
+        // for(let i = 0; i < 34; i++){
+        //     if(i % 2 == 0){
+        //         this.p1.playerDeck.push(this.deck.draw())
+        //     }
+        //     else{
+        //         this.p2.playerDeck.push(this.deck.draw())
+        //     }
+        // }
     
         for(let i = 0; i < this.p1.playerDeck.length; i++){
             this.p1.playerDeck[i].flip()

@@ -5,6 +5,9 @@ class Card{
         this.rank = 0;
         this.faceUP = true;
         this.hasEffect = false;
+        this.isEmpty = false;
+        this.faceUpIndex = null;
+        this.faceDownIndex = null;
     }
 
     flip(){
@@ -21,7 +24,7 @@ class Card{
             return "hidden";
         }
         else{
-            return this.value + " of " + this.suit;
+            return this.value + " of " + this.suit + "FU Index: " + this.faceUpIndex + " FD Index: " + this.faceDownIndex; 
             //this.rank + " " +  + " effect: " + this.hasEffect
         }
     }
@@ -53,10 +56,14 @@ class Card{
 
     render(){
         const card = document.createElement('div');
-        if(this.faceUP){
+        if(this.isEmpty){
+            return card
+        }
+        else if(this.faceUP){
             card.innerText = this.symbol()
             card.classList.add("card", this.color())
             card.dataset.value = `${this.value} ${this.symbol()}`
+            return card
         }
         else{
             card.style.backgroundColor = "red";

@@ -11,7 +11,15 @@ class Player{
         this.selectedIndexHand = null;
         this.selectedIndexFU = null;
         this.selectedIndexFD = null;
+        this.deckColor = null
         
+        
+    }
+
+    generateEmptyCard(){
+        let blank = new Card(null, null)
+        blank.isEmpty = true
+        return blank
     }
 
     addToHand(card){
@@ -21,16 +29,12 @@ class Player{
         this.hand.push(card)
     }
 
-    addToHandA(){
-        
-    }
-
     addToLoad(index){
         let temp = this.hand[index]
         this.hand.splice(index, 1)
         this.loadingZone.unshift(temp)
         this.loadingZone.forEach(c => {
-            console.log(this.loadingZone.indexOf(c) + " " + c.display())
+            //console.log(this.loadingZone.indexOf(c) + " " + c.display())
         })
     }
 
@@ -54,6 +58,30 @@ class Player{
         this.faceDownFinal.splice(index, 1)
         this.loadingZone.unshift(temp)
     }
+
+    addFromFaceUpA(){
+        let temp = this.selectedCard
+        //console.log(this.selectedCard.display())
+        //console.log(this.selectedIndexFU)
+        this.faceUpFinal.splice(this.selectedIndexFU, 1, this.generateEmptyCard()) //replace FU card with empty card
+        this.loadingZone.unshift(temp) //
+        this.selectedCard = null
+        this.selectedIndexFU = null
+       // this.rerenderFaceUp()
+        this.renderLoadingZone()
+    }
+
+    addFromFaceDownA(){
+        let temp = this.selectedCard
+
+        this.faceDownFinal.splice(this.selectedIndexFD, 1) //replace FD card with empty card
+        
+        this.loadingZone.unshift(temp) //immediately sends card to pile
+        this.selectedCard = null
+        this.selectedIndexFD = null
+        this.renderPlayer()
+    }
+
 
     drawTillThree(){
         while(this.hand.length < 3 && this.playerDeck.length != 0){
@@ -80,7 +108,7 @@ class Player{
 
     displayLoad(){
         if(this.loadingZone == 0){
-            console.log("")
+            //console.log("")
         }
         else{
             console.log("\nCards to be played:")
@@ -90,39 +118,39 @@ class Player{
 
     displayFaceUp(){
         let count = 0
-        console.log(this.name + "'s Face Up Cards:")
+        //console.log(this.name + "'s Face Up Cards:")
         this.faceUpFinal.forEach(c => console.log(count++ + ": " + c.display()))
     }
 
     displayFaceDown(){
         let count = 0
-        console.log(this.name + "'s Face Up Cards:")
+        //console.log(this.name + "'s Face Up Cards:")
         this.faceDownFinal.forEach(c => console.log(count++ + ": " + c.display()))
     }
 
     display(){
-        console.log(">>>"+ this.name + " faceDownFinal:")
+        //console.log(">>>"+ this.name + " faceDownFinal:")
         for(let i = 0; i < 3; i++){
-            console.log("    " + this.faceDownFinal[i].display())
+            //console.log("    " + this.faceDownFinal[i].display())
         }
-        console.log(">>>"+ this.name + " faceUpFinal:")
+        //console.log(">>>"+ this.name + " faceUpFinal:")
         for(let i = 0; i < 3; i++){
-            console.log("    " + this.faceUpFinal[i].display())
+            //console.log("    " + this.faceUpFinal[i].display())
         }
-        console.log(">>>"+ this.name + " hand:")
+        //console.log(">>>"+ this.name + " hand:")
         for(let i = 0; i < this.hand.length; i++){
-            console.log("    " + this.hand[i].display())
+            //console.log("    " + this.hand[i].display())
         }
-        console.log(">>>"+ this.name + " playerDeck:")
+        //console.log(">>>"+ this.name + " playerDeck:")
         for(let i = 0; i < this.playerDeck.length; i++){
-            console.log("    " + this.playerDeck[i].display())
+            //console.log("    " + this.playerDeck[i].display())
         }
     }
 
     displayRemainingCards(){
-        console.log(">>>"+ this.name + " playerDeck:")
+        //console.log(">>>"+ this.name + " playerDeck:")
         for(let i = 0; i < this.playerDeck.length; i++){
-            console.log("    " + this.playerDeck[i].display())
+            //console.log("    " + this.playerDeck[i].display())
         }
     }
 
@@ -135,11 +163,25 @@ class Player{
     }
 
     isFaceUpEmpty(){
-        return this.faceUpFinal.length == 0
+        let i = 0
+        this.faceUpFinal.forEach(c => {
+            if(!c.isEmpty){
+                ////console.log(c.display())
+                i++
+            }
+        })
+        return i == 0
     }
 
     isFaceDownEmpty(){
-        return this.faceDownFinal.length == 0
+        let i = 0
+        this.faceDownFinal.forEach(c => {
+            if(!c.isEmpty){
+                i++
+            }
+        })
+        return i == 0
+        //return this.faceDownFinal.length == 0
     }
 
     win(){
@@ -148,14 +190,39 @@ class Player{
 
     renderLoadingZone(){
         for(let i = 0; i < this.loadingZone.length; i++){
+            const lz = document.querySelector(`.loading-card-slot-${i}`)
             if(this.loadingZone[i] != null){
-                const lz = document.querySelector(`.loading-card-slot-${i}`)
                 lz.innerHTML = ``
                 lz.appendChild(this.loadingZone[i].render())
             }
+            else{
+                lz.innerHTML = ``
+            }
         }
-        
     }
+
+    rerenderFaceUp(){
+        for(let i = 0; i < this.faceUpFinal.length; i++){
+            const cardSlotFU = document.querySelector(`.play-card-slot-FU` + i)
+            const newCard = document.createElement('div')
+            newCard.className = "play-card-slot-FU" + i + " card-slot"
+            let tempCard = this.faceUpFinal[i].render()
+            newCard.appendChild(tempCard)
+            cardSlotFU.replaceWith(newCard)
+        }
+    }
+
+    rerenderFaceDown(){
+        for(let i = 0; i < this.faceDownFinal.length; i++){
+            const cardSlotFD = document.querySelector(`.play-card-slot-FD` + i)
+            const newCard = document.createElement('div')
+            newCard.className = "play-card-slot-FD" + i + " card-slot"
+            let tempCard = this.faceDownFinal[i].render()
+            newCard.appendChild(tempCard)
+            cardSlotFD.replaceWith(newCard)
+        }
+    }
+
 /*
     collect/save data for player
     redraw player
@@ -165,27 +232,24 @@ class Player{
         const playerName = document.querySelector('.player-name')
         playerName.innerHTML = `${this.name}`
 
-        //Player Side of Board
-        for(let i = 0; i < 3; i++){
+        // //Player Side of Board
+
+
+        for(let i = 0; i < this.faceUpFinal.length; i++){
+            //console.log(i)
             const cardSlotFU = document.querySelector(`.play-card-slot-FU` + i)
-            const cardSlotFD = document.querySelector(`.play-card-slot-FD` + i)
             cardSlotFU.innerHTML = ``
-            cardSlotFD.innerHTML = ``
             let tempCard = this.faceUpFinal[i].render()
-            let tempCard1 = this.faceDownFinal[i].render()
-            // tempCard.addEventListener('click', () => {
-            //     this.selectedCard = this.faceUpFinal[i];
-            //     this.selectedIndexFU = i
-            //     console.log(this.selectedCard.display() + ' ' + this.selectedIndexFU)
-            // })
-            // tempCard1.addEventListener('click', () => {
-            //     this.selectedCard = this.faceDownFinal[i];
-            //     this.selectedIndexFD = i
-            //     console.log(this.selectedCard.display() + ' ' + this.selectedIndexFD)
-            // }) 
             cardSlotFU.appendChild(tempCard)
-            cardSlotFD.appendChild(tempCard1)
         }
+
+        for(let i = 0; i < this.faceDownFinal.length; i++){    
+            const cardSlotFD = document.querySelector(`.play-card-slot-FD` + i)
+            cardSlotFD.innerHTML = ``
+            let tempCard = this.faceDownFinal[i].render()
+            cardSlotFD.appendChild(tempCard)
+        }
+
         //Player Hand
         const playHandCardSlot = document.querySelector('.play-hand')
         playHandCardSlot.innerHTML = ''
@@ -195,8 +259,9 @@ class Player{
         })
         //Deck and Loading Zone
         const playerDeck = document.querySelector('.play-deck')
-        console.log(this.playerDeck.length)
+       
         playerDeck.innerHTML = this.playerDeck.length;
+        playerDeck.style = `background-color: ${this.deckColor};`
         this.renderLoadingZone()
     }
 
@@ -205,9 +270,40 @@ class Player{
         playHandCardSlot.innerHTML = ''
         this.hand.forEach(c => {
             const cardDiv = this.renderHandCard(c)
-            playHandCardSlot.append(cardDiv)
+            playHandCardSlot.appendChild(cardDiv)
         })
     }
+
+    renderHandCard(card){
+        if(!card.faceUP){
+            card.flip()
+        }
+        const cardDiv = document.createElement('div')
+        cardDiv.className = 'hand-card-slot-' + this.hand.indexOf(card);
+        cardDiv.style = "width: 4rem;"
+        cardDiv.appendChild(card.render())
+        
+        return cardDiv     
+    }
+
+    // renderPlayerBackrow(){
+    //     const backrowSlot = document.querySelector(`#player`)
+    //     backrowSlot.innerHTML = ``
+    //     this.faceUpFinal.forEach(c => {
+    //         const cardDiv = this.renderFUCard(c)
+    //         backrowSlot.append(cardDiv)
+    //     })
+    //     const FDdiv = document.createElement('div')
+    //     FDdiv.className='backline-facedown'
+    //     this.faceDownFinal.forEach(c => {
+    //         const bcardDiv = this.renderFDCard(c)
+    //         FDdiv.append(bcardDiv)
+    //     })
+    //     backrowSlot.appendChild(FDdiv)
+
+    // }
+
+
 
     flipHand(){
         this.hand.forEach(c => {
@@ -216,40 +312,47 @@ class Player{
         this.renderPlayerHand()
     }
 
-    renderHandCard(card){
-        const cardDiv = document.createElement('div')
-        cardDiv.className = 'hand-card-slot-' + this.hand.indexOf(card);
-        cardDiv.style = "width: 4rem;"
-        cardDiv.appendChild(card.render())
+    
 
-        // const cardDiv = document.querySelector('.hand-card-slot')
-        // cardDiv.addEventListener('click', () => {
-        //     this.selectedCard = card;
-        //     this.selectedIndexHand = this.hand.indexOf(card)
-        //     console.log(this.selectedCard.display() + " " + this.selectedIndexHand)
-        // })
+    // renderFUCard(card){
+    //     const cardDiv = document.createElement('div')
+    //     cardDiv.className = `.play-card-slot-FU${this.faceUpFinal.indexOf(card)}`;
+    //     cardDiv.style = "width: 4rem;"
+    //     cardDiv.appendChild(card.render())
+    //     return cardDiv
+    // }
 
-        return cardDiv
-        
-    }
+    // renderFDCard(card){
+    //     const cardDiv = document.createElement('div')
+    //     cardDiv.className = '.play-card-slot-FD' + this.faceDownFinal.indexOf(card);
+    //     cardDiv.style = "width: 4rem;"
+    //     cardDiv.appendChild(card.render())
+    //     return cardDiv
+    // }
+
+    
 
     renderOpponent(){
         //Opponent side of Board
-        for(let i = 0; i < 3; i++){
-            const cardSlotFU = document.querySelector(`.opp-card-slot-FU` + i)
-            const cardSlotFD = document.querySelector(`.opp-card-slot-FD` + i)
+        for(let i = 0; i < this.faceUpFinal.length; i++){
+            const cardSlotFU = document.querySelector(`.opp-card-slot-FU` + i)          
             cardSlotFU.innerHTML = ``
-            cardSlotFD.innerHTML = ``
             let tempCard = this.faceUpFinal[i].render()
-            let tempCard1 = this.faceDownFinal[i].render()
             cardSlotFU.appendChild(tempCard)
+        }
+        for(let i = 0; i < this.faceDownFinal.length; i++){
+            const cardSlotFD = document.querySelector(`.opp-card-slot-FD` + i)
+            cardSlotFD.innerHTML = `` 
+            let tempCard1 = this.faceDownFinal[i].render()
             cardSlotFD.appendChild(tempCard1)
         }
         //Opponent Hand
         const oppHand = document.querySelector('.opp-hand')
         oppHand.innerHTML = ''
         this.hand.forEach(c => {
-            c.flip()
+            if(c.faceUP){
+                c.flip()
+            }
             const oppHandCardSlot = document.createElement('div')
             oppHandCardSlot.className = 'hand-card-slot';
             const cardDiv = c.render()
@@ -258,7 +361,9 @@ class Player{
         })
         //Opponent deck
         const opponentDeck = document.querySelector('.opp-deck')
-        console.log(this.playerDeck.length)
         opponentDeck.innerHTML = this.playerDeck.length;
+        opponentDeck.style = `background-color: ${this.deckColor};`
     }
+
+
 }
