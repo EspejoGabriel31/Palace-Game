@@ -4,7 +4,7 @@
 let deck = new Deck();
 deck.buildDeck()
 deck.addEffects()
-// deck.shuffleDeck()
+deck.shuffleDeck()
 
 let player1 = new Player("kagami")
 let player2 = new Player("shinobu")
@@ -39,7 +39,6 @@ function main(){
         tempOpponent = player1  
     }
 
-    //tempPlayer.displayFaceUp()
     tempPlayer.drawTillThree()
     tempPlayer.renderPlayer()
     tempOpponent.renderOpponent()
@@ -89,21 +88,16 @@ startButton.addEventListener('click', startEvent)
 function startEvent() {
     switchPhase()    
     addSelectCardEventListeners()
-    // console.log("isHandEmpty: " + tempPlayer.isHandEmpty() )
-    // console.log("isFUEmpty: " + tempPlayer.isFaceUpEmpty() )
-    // console.log("isFDEmpty: " + tempPlayer.isFaceDownEmpty() )
     console.log("===============================================")
     if(tempPlayer.loadingZone.length != 0){
         unshiftButton.disabled = false
     }
 
     if(tempPlayer.isHandEmpty() && !tempPlayer.isFaceUpEmpty()){
-        //console.log("made it here")
         addFUCardEventListeners()
     }
     else if(tempPlayer.isHandEmpty() && tempPlayer.isFaceUpEmpty()){
         console.log('+++++++++++++++++++++++++++++++++++++++++')
-        //addFDCardEventListeners()
     }
 
 }
@@ -120,13 +114,6 @@ function switchBackandFront(){
 
         tempPlayer.backRowSwitched = true
     }
-    // else if((fuNode0.innerHTML != '<div></div>' || fuNode1.innerHTML != '<div></div>' || fuNode2.innerHTML != '<div></div>') && tempPlayer.backRowSwitched){
-    //     let tempArray = tempPlayer.faceUpFinal
-    //     let tempArrayA = tempPlayer.faceDownFinal
-    //     tempPlayer.faceUpFinal = tempArrayA
-    //     tempPlayer.faceDownFinal = tempArray
-    //     tempPlayer.backRowSwitched = false
-    // }
 }
 
 function switchPhase(){    
@@ -161,7 +148,6 @@ function addSelectCardEventListeners(){
 function cardEvent(c)  { //when card has been clicked on
     tempPlayer.selectedCard = c
     tempPlayer.selectedIndexHand = tempPlayer.hand.indexOf(c)
-    //check if selected card has an effect
     if(tempPlayer.selectedCard.hasEffect && tempPlayer.loadingZone.length == 0){
         effectActivate(1)
     }
@@ -205,7 +191,6 @@ function addFUCardEventListeners(){
 }
 
 function cardEventFU(c){
-    // console.log("start of cardEventFU")
     
     if(tempPlayer.finalPhase && !c.faceUP){
         c.flip() 
@@ -230,12 +215,10 @@ function cardEventFU(c){
     console.log('=======================================')
     console.log(tempPlayer.selectedBackrow)
     console.log('=======================================')
-    //tempPlayer.selectedIndexFU = c.faceUpIndex
 
 
     if(tempPlayer.selectedCard.hasEffect){
         effectActivate(2)
-        //console.log("effect card activated successfully")
     }
     else if(tempPlayer.selectedCard.rank < board.topCardRank){
         alert("Card must be higher value than top of pile!")
@@ -250,14 +233,8 @@ function cardEventFU(c){
         return
     }
     else{
-        // if(tempPlayer.finalPhase){
-        //     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        //     console.log(tempPlayer.selectedIndexFU + ' ' + tempPlayer.selectedIndexFD)
-        //     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        // }
         tempPlayer.addFromFaceUpA()
         board.addToPile(tempPlayer)
-        // console.log("normal card played successfully")
         tempPlayer.rerenderFaceUp()
 
         console.log("AFTER")
@@ -268,9 +245,7 @@ function cardEventFU(c){
         console.log('########################################')
 
         newTurn()
-        // console.log("new turn")
     }
-    // console.log("end of cardEventFU")
 }
 
 function addFDCardEventListeners(){
