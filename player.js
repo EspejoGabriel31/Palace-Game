@@ -69,14 +69,6 @@ class Player{
         this.selectedIndexFU = null
     }
 
-    addFromFaceDownA(){
-        let temp = this.selectedCard
-        this.faceDownFinal.splice(this.selectedIndexFD, 1, this.generateEmptyCard()) //replace FD card with empty card
-        this.loadingZone.unshift(temp) //immediately sends card to pile
-        this.selectedCard = null
-        this.selectedIndexFD = null
-        //this.renderPlayer()
-    }
 
 
     drawTillThree(){

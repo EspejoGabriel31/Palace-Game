@@ -1,0 +1,105 @@
+obsolete functions
+
+
+
+    // addFromFaceDownA(){
+    //     let temp = this.selectedCard
+    //     this.faceDownFinal.splice(this.selectedIndexFD, 1, this.generateEmptyCard()) //replace FD card with empty card
+    //     this.loadingZone.unshift(temp) //immediately sends card to pile
+    //     this.selectedCard = null
+    //     this.selectedIndexFD = null
+    //     //this.renderPlayer()
+    // }
+
+    // function addFDCardEventListeners(){
+//     let i = 0
+//     tempPlayer.faceDownFinal.forEach(c => {
+//         cardDiv = document.querySelector(`.play-card-slot-FD${i++}`)
+//         cardDiv.addEventListener('click', () => {
+//             c.flip()
+//             cardEventFD(c)
+//         })
+//     })
+// }
+
+// function cardEventFD(c){
+
+//     tempPlayer.selectedCard = c
+//     tempPlayer.selectedIndexFD = c.faceDownIndex
+//     if(tempPlayer.selectedCard.hasEffect){
+//         effectActivate(3)
+//     }
+//     else if(tempPlayer.selectedCard.rank < board.topCardRank){
+//         alert("Card must be higher value than top of pile!")
+//         let FDtempCard = tempPlayer.selectedCard
+//         tempPlayer.faceDownFinal.splice(tempPlayer.selectedIndexFD, 1, tempPlayer.generateEmptyCard())
+//         tempPlayer.addToHand(FDtempCard)
+//         board.takePile(tempPlayer)
+//         newTurn()
+//         return
+//     }
+//     else {
+//         tempPlayer.addFromFaceDownA()
+//         board.addToPile(tempPlayer)
+//         tempPlayer.rerenderFaceDown()
+//         newTurn()
+//     }
+
+// }
+
+  // console.log("AFTER")
+        // console.log('########################################')
+        // tempPlayer.displayFaceUp()
+        // console.log('########################################')
+        // tempPlayer.displayFaceDown()
+        // console.log('########################################')
+
+           // console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[FINAL PHASE ACTIVE]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
+        // console.log('/////////////////////////////////////////////')
+        // tempPlayer.displayFaceUp() 
+        // console.log('/////////////////////////////////////////////')
+
+        
+    // console.log("BEFORE")
+    // console.log('########################################')
+    // tempPlayer.displayFaceUp()
+    // console.log('########################################')
+    // tempPlayer.displayFaceDown()
+    // console.log('########################################')
+
+    
+    // console.log('=======================================')
+    // console.log(tempPlayer.selectedBackrow)
+    // console.log('=======================================')
+
+    // else if(selector == 3){
+    //     if(tempPlayer.selectedCard.rank == 3){
+    //         board.turn++
+    //         tempPlayer.hand.splice(tempPlayer.selectedIndexFD, 1, tempPlayer.generateEmptyCard())
+    //     }
+    //     else if(tempPlayer.selectedCard.rank == 7){
+    //         tempPlayer.addFromFaceDownA()
+    //         board.addToPile(tempPlayer)
+    //     }
+    //     else if(tempPlayer.selectedCard.rank == 10){
+    //         board.clearPile()
+    //         tempPlayer.faceDownFinal.splice(tempPlayer.selectedIndexFD, 1, tempPlayer.generateEmptyCard())
+    //     }
+    // }
+
+     // else if(tempPlayer.isHandEmpty() && tempPlayer.isFaceUpEmpty()){
+    //     console.log('+++++++++++++++++++++++++++++++++++++++++')
+    // }
+
+        console.log("===============================================")
+
+        console.log('final phase?: ' + tempPlayer.finalPhase)
+
+        
+        //console.log(tempPlayer.name +  " out of cards: " + )
+
+        
+// let testCard = new Card('spades', 'A')
+// testCard.rank = 14
+// board.pile.push(testCard)
+// board.topCardRank = testCard.rank
