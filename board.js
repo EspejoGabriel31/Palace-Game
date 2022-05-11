@@ -494,14 +494,14 @@ class Board{
             this.p2.faceUpFinal[i].faceUpIndex = i
         }
     
-        // for(let i = 0; i < 34; i++){
-        //     if(i % 2 == 0){
-        //         this.p1.playerDeck.push(this.deck.draw())
-        //     }
-        //     else{
-        //         this.p2.playerDeck.push(this.deck.draw())
-        //     }
-        // }
+        for(let i = 0; i < 34; i++){
+            if(i % 2 == 0){
+                this.p1.playerDeck.push(this.deck.draw())
+            }
+            else{
+                this.p2.playerDeck.push(this.deck.draw())
+            }
+        }
     
         for(let i = 0; i < this.p1.playerDeck.length; i++){
             this.p1.playerDeck[i].flip()
