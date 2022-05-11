@@ -494,7 +494,7 @@ class Board{
             this.p2.faceUpFinal[i].faceUpIndex = i
         }
     
-        for(let i = 0; i < 34; i++){
+        for(let i = 0; i < 10; i++){
             if(i % 2 == 0){
                 this.p1.playerDeck.push(this.deck.draw())
             }
