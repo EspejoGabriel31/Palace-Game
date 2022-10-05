@@ -1,0 +1,57 @@
+
+@import 'config';
+
+.hand{
+    display: flex;
+    border: 2px solid black;
+    height: 9.5rem;
+    margin: $standard-gap;
+    padding: 20px;
+
+    .opp-deck{
+        background-color: navy;
+    }
+    .opp-hand{
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: hidden;
+        width: 100%;
+        gap: $standard-gap;
+        justify-content: flex-end;
+        padding-right: 20px;
+        padding-top: 10px;
+        // .hand-card-slot{
+        //     width: $card-width;
+        // }
+    }
+
+    .play-hand{
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        width: 100%;
+        gap: $standard-gap;
+        padding-top: 15px;
+        padding-left: 20px;
+    }
+
+    .play-deck{
+        background-color: crimson; 
+        
+    }
+}
+
+.deck{
+    height: $card-height;
+    width: $card-width;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    border-radius: .5rem;
+    color: white;
+    user-select: none;
+}

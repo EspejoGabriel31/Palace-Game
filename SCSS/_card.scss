@@ -1,0 +1,35 @@
+@import 'config';
+
+.card{
+    position: relative;
+    height: 100%;
+    width:100%;
+    border: 1px solid black;
+    border-radius: .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: white;
+
+    &::before,&::after{
+        position:absolute;
+        content: attr(data-value);
+        font-size: 1rem;
+    }
+    &::before{
+        top: .5rem;
+        left: .5rem;
+    }
+
+    &::after{
+        bottom: .5rem;
+        right: .5rem;
+        transform: rotate(180deg);
+    }
+}
+
+div[class^="hand-card-slot"]{
+    width: $card-width;
+    height: $card-height;
+}

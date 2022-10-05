@@ -1,0 +1,40 @@
+@import 'config';
+.last-row{
+    display: flex;
+    height: 9.5rem;
+    border: 2px solid black;
+    background-color: $secondary-color;
+
+    .loading{
+        width: 100%;
+        display: flex;
+        height: $card-height;
+        margin: $standard-gap;
+        gap: $standard-gap;
+    }
+
+    .panel{
+        width: 20%;
+        margin: 1rem;
+        /* border: 2px solid black; */
+        
+        .player-name{
+            margin: auto;
+            text-align: center;
+            border: 2px solid black;
+            border-radius: 25px;
+            padding: 5px;
+            
+        }
+
+        .buttons{
+            display: inline-block;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 1;
+            grid-row-end: 2;
+            padding-top: 10px;
+            padding-left: 15px;
+        }
+    }
+}

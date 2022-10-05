@@ -1,0 +1,171 @@
+body {
+  background-color: forestgreen;
+  font-family: Trebuchet MS, Arial, sans-serif;
+}
+
+.board {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 4rem);
+  grid-template-rows: repeat(3, 7rem);
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 100%;
+  background-color: forestgreen;
+}
+.board .turn-counter {
+  display: inline-grid;
+  grid-column-start: 1;
+  text-align: center;
+  height: 50%;
+  position: relative;
+}
+.board .pile {
+  height: 100%;
+  width: 100%;
+  display: inline-grid;
+  grid-column-start: 2;
+  border: 2px solid black;
+  border-radius: 0.5rem;
+}
+
+.backline {
+  height: 100%;
+  width: 100%;
+  display: inline-grid;
+  grid-template-columns: repeat(4, 4rem);
+  grid-column-start: 1;
+  grid-column-end: 3;
+  gap: 1rem;
+}
+.backline-facedown {
+  height: 7rem;
+  width: 4rem;
+  position: absolute;
+  z-index: -1;
+  display: inline-grid;
+  grid-template-columns: repeat(4, 4rem);
+  grid-column-start: 1;
+  grid-column-end: 3;
+  gap: 1rem;
+  transform: translate(5px, 5px);
+}
+
+.card {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  background-color: white;
+}
+.card::before, .card::after {
+  position: absolute;
+  content: attr(data-value);
+  font-size: 1rem;
+}
+.card::before {
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.card::after {
+  bottom: 0.5rem;
+  right: 0.5rem;
+  transform: rotate(180deg);
+}
+
+div[class^=hand-card-slot] {
+  width: 4rem;
+  height: 7rem;
+}
+
+.hand {
+  display: flex;
+  border: 2px solid black;
+  height: 9.5rem;
+  margin: 1rem;
+  padding: 20px;
+}
+.hand .opp-deck {
+  background-color: navy;
+}
+.hand .opp-hand {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  width: 100%;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+.hand .play-hand {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 100%;
+  gap: 1rem;
+  padding-top: 15px;
+  padding-left: 20px;
+}
+.hand .play-deck {
+  background-color: crimson;
+}
+
+.deck {
+  height: 7rem;
+  width: 4rem;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  border-radius: 0.5rem;
+  color: white;
+  user-select: none;
+}
+
+.last-row {
+  display: flex;
+  height: 9.5rem;
+  border: 2px solid black;
+  background-color: wheat;
+}
+.last-row .loading {
+  width: 100%;
+  display: flex;
+  height: 7rem;
+  margin: 1rem;
+  gap: 1rem;
+}
+.last-row .panel {
+  width: 20%;
+  margin: 1rem;
+  /* border: 2px solid black; */
+}
+.last-row .panel .player-name {
+  margin: auto;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 25px;
+  padding: 5px;
+}
+.last-row .panel .buttons {
+  display: inline-block;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  padding-top: 10px;
+  padding-left: 15px;
+}
+
+/*# sourceMappingURL=style.css.map */

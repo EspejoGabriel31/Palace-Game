@@ -1,0 +1,70 @@
+@import 'config';
+@import 'utilities';
+
+body{
+    background-color: $primary-color;
+    font-family: $fonts;
+}
+
+.board{
+    display: inline-grid;
+    grid-template-columns: repeat(3, $card-width);
+    grid-template-rows: repeat(3, $card-height);
+    gap: $standard-gap;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    width: 100%;
+    
+    background-color: forestgreen;
+
+    .turn-counter{
+        display: inline-grid;
+        grid-column-start: 1;
+        text-align: center;
+        height: 50%;
+        position: relative;
+    }
+
+    .pile{
+        height:100%;
+        width: 100%;
+        display: inline-grid;
+        grid-column-start: 2;
+        border: 2px solid black;
+        border-radius: .5rem;
+    }
+}
+
+.backline{
+    height:100%;
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: repeat(4, $card-width);
+    grid-column-start: 1;
+    grid-column-end: 3;
+    gap: $standard-gap;
+
+    &-facedown{
+        height: $card-height;
+        width: $card-width;
+        
+        position: absolute;
+        z-index: -1; 
+        
+        display: inline-grid;
+        grid-template-columns: repeat(4, $card-width);
+        grid-column-start: 1;
+        grid-column-end: 3;
+        gap: $standard-gap;
+
+        transform: translate(5px, 5px);
+    }
+}
+
+@import 'card';
+
+@import 'hand';
+
+@import 'last';
